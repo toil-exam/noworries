@@ -1,0 +1,216 @@
+
+Carrrrrdddd hearts
+
+-------------
+
+Cor
+
+Cor Tuum (your heart aww HERT A DA CERDS) ?
+
+COR PECTO ???
+CASTRUM COR ???
+
+#######
+
+
+
+Card types 
+
+
+
+Cor (heart, core) - Stronghold - one per player, from separate deck, determines faction, territory strength / number, hand size, territory abilities, generic resource generation etc
+
+Territory - strength modifier, abilities, resource generation, players start with generic face down card but then there are territory cards that are played to develop the existing property
+
+Resource - gold wood stone metal food water jem?, right for generic use down for super use left for needy use
+
+Character - strength, health, abilities, the crux of battling and destroying enemy territory, some can generate resources
+
+Item - attach, modifiers, abilities, weapons armor, when an item has a use ability it can be used attached or separate, can only equip when both it and the character are up, the package of the character and item has the use ability
+
+Action - speed? ability etc, one time use or aoe effects or maybe everybody gets 1 kinda stuff, events
+
+
+
+#####
+
+
+
+Game setup
+
+
+
+Shuffle strongholds and deal each player 6? , each player chooses one and gives the rest back
+
+Shuffle deck (500 - 1000? cards) - deck and discard pile are communal. Players individually have recycling bins that get emptied periodically into the communal trash. 
+
+Deal 13? cards to each player, 4 face down as territories, 9 as hand
+
+Point of game is to destroy enemies territories (add some alt-wins)
+
+Territory strength determined by stronghold, developing by playing territory cards makes stronger and adds abilities. When developed the face down card(s) get looked at, owner either adds to hand or discards it to draw
+
+Players take turns in order to the left, winner of previous game starts or roll dice
+
+In multi player games when a player is killed they get one last turn with no beginning - no card draw no refresh etc - last words kind of situation
+
+Most cards can be discarded (left) to generate resources, this works in play and on the table, cards in play must be up to be turned left
+
+When a card is discarded (not creatures dying leaving play etc) another player may put it in their recycling bin under a few circumstances, priority based on turn order. A player may recycle any cards of their faction and any player may recycle generic faction cards. A player may not recycle cards they themselves discard. A player may play cards from their recycling bin on their turn, at end of turn the bin is emptied, to retain a card a card must be discarded from the players hand. No faction cards have the possibility of just being passed around eh
+
+Strongholds generate a generic amount of resources based on faction, resource cards generate more, territories can generate, yes even creatures and items *can generate
+
+Some cards like items can be attached. Maybe these cards get recycled when the attaching card dies??? Think of something interesting
+
+Action cards do something eventful, generally get discarded after use but some stay in play or get passed around (will say on cards). Generally played on your turn but some specifically work on others turns. 
+
+Tokens - can be represented by face down cards off the top of deck
+
+#######
+
+
+
+Turn stuff
+
+
+
+
+- Beginning of turn
+
+Refresh - clear rollover damage, clear rollover resources, up rights, right downs, pay cost to fully up
+
+Draw - draw 1, discard x draw x + 1 (recyling~), or faction draw - reveal off top of deck until your faction shows up revealed into recycling rest bottom of the deck (maybe faction recycling?~)
+
+- Middle of turn
+
+Play stuff - generate resources to pay costs to put things into play, faction cards come in up, no faction in right and anti faction cards in down
+
+Attack - attack territories, defending player puts defenders, deal damages, attackers turn right to deal damage. Resource cards can be attacked as though they were territories (stronghold strength) but their destruction is more strategic since destroying territories wins the game
+
+- End of turn
+
+Empty recycle bin - discard a card to keep a card in your bin. Bin is basically just shoved under your stronghold, opponents can totally look
+
+
+
+
+
+########
+
+
+
+Card turning
+
+
+
+
+There are 4 symbols used to represent card turning / orientation
+
+UP - right cards get turned up at the beginning of the turn, faction cards come in up, will almost never be a cost, sometimes part of an effect. A card must be up in order to be used to turn other directions
+
+RIGHT - generic use, attack, generic faction cards come in right, right cards refresh to up
+
+DOWN - like extra strong use, enemy faction cards come in down, down cards refresh to right or pay cards cost to refresh to up. Rarely - attacking an opponent with a character of their own faction turns the character down. Aoe abilities ("all characters get +1") turn off while a card is down
+
+LEFT - symbol is reverse colors, represents discard as well as sacrifice, a card on the table must be up to be turned left and does not go to a recycle bin, a card discarded from the hand can be recycled by other players if applicable
+
+######
+
+
+
+
+Parts of cards
+
+
+
+D6 - usually numbers are used but occasionally you'll need to roll dice, more complex would be like 3D6 + 3, should never show up as a cost, gets rolled when you use an ability or action. "Deal D6 damage", "attack strength D6", etc but will try to spell it out if it's even slightly more interesting
+
+Name
+Cost (if applicable) - may contain and / or will try not to be complicated
+Faction (if applicable) - no dual factions 
+
+Art - as full card as possible, while online should be 100% stolen but then shift to print do it uppp
+
+Abilities (if applicable) - aoe abilities will be like "all your characters get +1", these turn off when the card is down. Turning right is the generic use for abilities. Activated abilities are written as a formula. Right - cost = effect + resource. Cost here is shown as subtracted, resources added shown with a plus. 
+
+Attack / defense (if applicable) - modified by attached items etc
+
+Snazzy border - color indicating type/ faction/ use
+
+Back of card - one color for deck one color for strongholds
+
+Counters - cards can accumulate various counters (probably use dice). Things like damage and leftover resources get cleaned up at the beginning of your turn, beneficial counters like strength counters stay on until they're used. 
+
+Strength counters add one attacking power, but also prevent 1 damage when defending. Remove such counters when the damage is prevented
+
+Resource counters usually sit and bank up a resource to be removed later. (These counter removing abilities can only be used while the card is up) 
+
+
+
+######
+
+
+
+Factions
+
+
+
+Basically 100x cards per so like 500-6 1000-8 or 9
+
+Like 50-100 per faction and like 20-50 generic offset (like cards can be faction adjacent without being explicitly part of a faction) 
+
+
+
+White - lion - golden dawn
+
+Black - raven - midnight cult 
+
+Red - dragon - wyvern's fang
+
+Orange - phoenix - inferno legion
+
+Yellow - snake - lightning brood
+
+Green - stag - greene's troupe
+
+Blue - shark - keen eye crew
+
+Purple - unicorn - rider gang
+
+
+
+Generic stuff will cost like 1 wood or 3 gold, faction stuff will be like 5 stone and 5 food and 10 gold
+
+Cards played with a faction aligning with your strongholds faction come into play up. If you're playing unaffiliated you may play one unaffiliated card up per turn. 
+
+Unaffiliated cards come into play right unless otherwise stated. 
+
+Cards affiliated with a faction that is not your faction (which is every faction if you're unaffiliated) come into play down. 
+
+
+!!!!!!!!
+
+
+
+
+EXTENDED RULES
+
+
+
+
+Spice things up! The winner of each game is declared house champion / whatever title they want. They get to implement a change to an existing rule (more territories! Dual strongholds!) or introduce entirely new rules (house rules). Depending on the playgroup these can be simple or complicated, maybe introduce alcohol if you're of age? Literally it's whatever you can get away with, I'm not going to knock down your door and be upset that you're not playing right, I'm going to knock down your door and be interested to see what kind of rules you've come up with and what customs and rituals and accumulated around the game.
+
+
+
+
+FORMATS
+
+standard / chaos - as described above
+
+constructed - each faction broken into 100ish card decks, have lists for precons but allow people to build whatever
+
+draft - cards are drafted out to build decks
+
+
+
+

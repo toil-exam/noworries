@@ -1,0 +1,9 @@
+<?php
+$name=array();
+$name[]="lucy";
+$name[]="marsh";
+$name[]="craig";
+$name[]="yourmom";
+$name[]="susan";
+$name[]="leonard";
+?>

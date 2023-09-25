@@ -1,0 +1,3 @@
+<?php
+$comment=array();$comment[0]=array("Cormac Holland","Hello, I visit the Lucky Pie Gallery very often and I always remember this painting for it\'s creativity and irony, and next time I visit, I will be very happy to buy it and hang it up on an empty portion of my room. I find it very humorous, and I\'m glad to support your efforts as you bloom and thrive as an artist with a great sense of humor and an explosively creative brain.");
+?>

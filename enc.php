@@ -1,0 +1,85 @@
+<?php
+//encyclopedia
+
+$GLOBALS["enc"]=array(
+	"animal"=>array(
+		0=>array("Chicken","Rabbit","Rat"),
+		1=>array("Camel","Cattle","Deer","Donkey","Goat","Pig","Sheep","Yak"),
+		2=>array("Alpaca","Buffalo","Bear","Bison","Crocodile","Elk","Moose","Reindeer"),
+		3=>array("Addax"),
+		4=>array("Oryx")
+		),
+	"armor"=>array(
+		0=>array(),
+		1=>array(),
+		2=>array(),
+		3=>array(),
+		4=>array()
+		),
+	"crop"=>array(
+		0=>array("Barley","Carrot","Garlic","Lettuce","Oat","Peanut","Potato","Raddish","Rice","Soy","Wheat"),
+		1=>array("Apple","Beet","Cucumber","Corn","Pepper","Tomato","Turnip"),
+		2=>array("Almond","Banana","Grape","Lemon","Maize","Mushroom","Orange","Rye","Strawberry"),
+		3=>array("Asparagus","Cashew","Chilli","Ginger","Lime","Peach","Shallot","Tangerine","Truffle","Yam"),
+		4=>array("Coconut","Guava","Mango","Olive","Quinoa","Watermelon")
+		),
+	"fabric"=>array(
+		0=>array("Broadcloth","Buckram","Burlap","Canvas","Cheesecloth","Felt","Gingham","Hemp","Jute","Muslin","Sailcloth","Terrycloth"),
+		1=>array("Cotton","Corduroy","Denim","Flannel","Gabardine","Seersucker","Tartan","Tweed","Twill","Wool"),
+		2=>array("Brocade","Lace","Leather","Linen","Herringbone","Moleskin","Oilskin","Satin","Silk","Suede"),
+		3=>array("Angora","Calico","Cashmere","Fleece","Fur","Sharkskin","Taffeta","Velour","Velvet"),
+		4=>array()
+		),
+	"food"=>array(
+		0=>array("Dip","Juice","Meal","Paste"),
+		1=>array("Cake","Chips","Soup"),
+		2=>array("Salad","Stew"),
+		3=>array("Dumpling","Loaf"),
+		4=>array("Pastry","Sandwich")
+		),
+	"livestock"=>array(
+		0=>array(),
+		1=>array(),
+		2=>array(),
+		3=>array(),
+		4=>array()
+		),
+	"metal"=>array(
+		0=>array("Brass","Copper","Nickel","Pewter","Tin"),
+		1=>array("Bronze","Cobalt","Invar","Iron","Steel"),
+		2=>array("Aluminum","Electrum","Kovar","Nichrome","Talonite","Titanium"),
+		3=>array("Chromium","Rosemetal","Silver","Vitallium","Zirconium"),
+		4=>array("Gold","Palladium","Rosegold")
+		),
+	"rweapon"=>array(
+		0=>array("Sling"),
+		1=>array("Bow"),
+		2=>array("Longbow"),
+		3=>array("Crossbow"),
+		4=>array("Cannon")
+		),
+	"stone"=>array(
+		0=>array("Limestone","Mudstone","Sandstone"),
+		1=>array("Basalt","Flint","Granite","Quartz","Slate"),
+		2=>array("Gneiss","Marble","Obsidian"),
+		3=>array("Andesite","Basanite","Quartzite"),
+		4=>array("Crocodite","Jadedite","Serpentinite")
+		),
+	"weapon"=>array(
+		0=>array("Club","Dagger","Dirk","Knife","Hammer","Hatchet","Pickaxe","Shortsword","Sickle","Staff"),
+		1=>array("Axe","Bludgeon","Flail","Goad","Halberd","Lance","Mace","Machete","Morningstar","Pike","Quarterstaff","Rapier","Sabre","Sword"),
+		2=>array("Battleaxe","Broadsword","Cutlass","Falchion","Glaive","Longsword","Maul","Scimitar","Scythe"),
+		3=>array("Longsword","Warhammer"),
+		4=>array("Claymore","Katana")
+		),
+	"wood"=>array(
+		0=>array("Ash","Bamboo","Beech","Birch","Cedar","Maple","Oak","Pine","Poplar","Spruce","Willow"),
+		1=>array("Camphor","Cypress","Dogwood","Elm","Fir","Hickory","Sycamore","Teak","Yew"),
+		2=>array("Aspen","Eucalyptus","Hemlock","Mahogany","Muskwood","Redwood","Sandalwood"),
+		3=>array("Alder","Ebony","Ironwood","Lacewood","Satinwood","Sourwood"),
+		4=>array("Bloodwood","Holywood","Ironbark","Kingwood","Marblewood","Rosewood")
+		)
+	)
+
+
+?>
