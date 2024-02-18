@@ -101,6 +101,13 @@ function _art($x,$w,$h,$m,$t,$p=false){
 
 // _art(20,,,"",array(),false);
 
+_art(300,20,20,"aoc",array(),false);
+_art(299,11,14,"aoc",array(),false);
+_art(298,24,36,"aoc",array(),false);
+_art(297,20,16,"aoc",array(),false);
+_art(296,20,16,"aoc",array(),false);
+_art(295,20,16,"aoc",array(),false);
+_art(294,20,16,"aoc",array(),false);
 _art(293,20,16,"aoc",array(),false);
 _art(292,12,16,"aoc",array(),false);
 _art(291,8,10,"aoc",array(),false);
