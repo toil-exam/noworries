@@ -1,0 +1,82 @@
+:root {
+    --standard-time: 1sec;
+}
+
+body {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+}
+
+#cubeBoard {
+    position: absolute;
+}
+
+#dirPad {
+    position: absolute;
+    top: 400px;
+}
+
+.face {
+    position: sticky; 
+}
+
+.row {
+    display: flex;
+}
+
+.space {
+    font-size: 3em;
+    border: 1px solid white;
+    padding: 5px; 
+    width: 100px;
+    height: 100px;
+}
+
+
+.grow-up {animation: grow-up 2s linear 0s 1 normal; }
+@keyframes grow-up {
+    0% {height: 0%; top: 100%; }
+    100% {height: 100%; top: 0%; }
+}
+.shrink-up {animation: shrink-up 2s linear 0s 1 normal; }
+@keyframes shrink-up {
+    0% {height: 100%; top: 0%; }
+    100% {height: 0%; top: 0%; }
+}
+
+.grow-right {animation: grow-right 2s linear 0s 1 normal; }
+@keyframes grow-right {
+    0% {width: 0%; left: 0%; }
+    100% {width: 100%; left: 0%; }
+}
+.shrink-right {animation: shrink-right 2s linear 0s 1 normal; }
+@keyframes shrink-right {
+    0% {width: 100%; left: 100%; }
+    100% {width: 0%; left: 100%; }
+}
+
+.grow-down {animation: grow-down 2s linear 0s 1 normal; }
+@keyframes grow-down {
+    0% {height: 0%; top: 0%; }
+    100% {height: 100%; top: 0%; }
+}
+.shrink-down {animation: shrink-down 2s linear 0s 1 normal; }
+@keyframes shrink-down {
+    0% {height: 100%; top: 0%; }
+    100% {height: 0%; top: 100%; }
+}
+
+.grow-left {animation: grow-left 2s linear 0s 1 normal; }
+@keyframes grow-left {
+    0% {width: 0%; left: 100%; }
+    100% {width: 100%; left: 0%; }
+}
+.shrink-left {animation: shrink-left 2s linear 0s 1 normal; }
+@keyframes shrink-left {
+    0% {width: 100%; left: 0%; }
+    100% {width: 0%; left: 0%; }
+}

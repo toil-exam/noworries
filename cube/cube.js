@@ -24,22 +24,29 @@ west                                            east
 
 
 
+// when dom is ready
+$(document).ready(function(){
+
 
 
 
 class GM {
 
     static clearBoard() {
-        let spaces = [];
-        for (i = 0; i < 27; i++) {
-            spaces[i] = i === 14 ? null : ""; // 14 is the center of the cube and can't be played
+        let output = [];
+        for (let i = 0; i < 27; i++) {
+            output[i] = i === 14 ? null : " "; // 14 is the center of the cube and can't be played
         }
-        return spaces;
+        return output;
     }
 
     static faceNames = ["north", "sky", "west", "south", "east", "ground"];
 
     static dirNames = ["up", "right", "down", "left"]; // indexOf will convert to turns of
+
+    static dirNum(dir) {
+        return this.dirNames.indexOf(dir);
+    }
 
     static randomFace() {
         const r = Math.floor(Math.random() * 6);
@@ -54,11 +61,25 @@ class GM {
     static addDirs(...dirs) { // spread operator takes multiple dirs
         let output = 0; // 0 is up
         for (const dir of dirs) {
-            output += this.dirNames.indexOf(dir); // dir to num of turns
-            output -= output > 3 ? 4 : 0; // if more than 3, then -4 else -0
+            output += this.dirNum(dir);
+            if (output > 3) output -= 4;
         }
-        output = this.dirNames[output]; // convert numb back to dir
+        output = this.dirNames[output]; // convert num back to dir
         return output;
+    }
+
+    static subDirs(initial, ...subs) {
+        let output = this.dirNum(initial);
+        for (const sub of subs) {
+            output -= this.dirNum(sub);
+            if (output < 0) output += 4;
+        }
+        output = this.dirNames[output];
+        return output;
+    }
+
+    static antiDir(dir) {
+        return this.addDirs(dir, "down"); // down is 2 ie the opposite side
     }
 
     static faceMap = { // all in their "up" position
@@ -70,13 +91,13 @@ class GM {
         "ground" : [ [25,26,27], [22,23,24], [19,20,21] ]
     };
 
-    static transformMap = {
-        "north" : {"up" : ["ground", "up"], "right" ["east", "down"]: "down": ["sky", "up"], "left": ["west", "down"]},
-        "sky" : {"up" : ["north", "up"], "right" ["east", "left"]: "down": ["south", "up"], "left": ["west", "right"]},
-        "west" : {"up" : ["sky", "left"], "right" ["south", "up"]: "down": ["ground", "right"], "left": ["north", "down"]},
-        "south" : {"up" : ["sky", "up"], "right" ["east", "up"]: "down": ["ground", "up"], "left": ["west", "up"]},
-        "east" : {"up" : ["sky", "right"], "right" ["north", "down"]: "down": ["ground", "left"], "left": ["south", "up"]},
-        "ground" : {"up" : ["south", "up"], "right" ["east", "right"]: "down": ["north", "down"], "left": ["west", "left"]},
+    static transformMap = { // "fromFace" : {"dir" : ["toFace", "toDir"] }
+        "north" : {"up" : ["ground", "up"], "right" : ["east", "down"], "down": ["sky", "up"], "left": ["west", "down"]},
+        "sky" : {"up" : ["north", "up"], "right" : ["east", "left"], "down": ["south", "up"], "left": ["west", "right"]},
+        "west" : {"up" : ["sky", "left"], "right" : ["south", "up"], "down": ["ground", "right"], "left": ["north", "down"]},
+        "south" : {"up" : ["sky", "up"], "right" : ["east", "up"], "down": ["ground", "up"], "left": ["west", "up"]},
+        "east" : {"up" : ["sky", "right"], "right" : ["north", "down"], "down": ["ground", "left"], "left": ["south", "up"]},
+        "ground" : {"up" : ["south", "up"], "right" : ["east", "right"], "down": ["north", "down"], "left": ["west", "left"]},
     };
 
     static winMap() {
@@ -126,7 +147,7 @@ class GM {
 
 
     static face(faceName, dir = "up") {
-        let output = this.faceMap[dir];
+        let output = this.faceMap[faceName];
         if (dir !== "up") output = this.rotateFace(output, dir);
         return output;
     }
@@ -146,21 +167,38 @@ class Cube {
         this.resetGame();
 
 
-        this.gui = new GUI(cube = this);
+        this.gui = new GUI(this);
     }
 
 
 
-    resetGameGame() {
+    resetGame() {
         this.spaces = GM.clearBoard();
-        this.currentPlayer = 0; // 1 is computer
-        this.setFace(); // defaults
+        this.currentPlayer = true; // false is computer
+        this.currentFace = "sky"; // default
+        this.currentDir = "up"; // default
     }
 
-    setFace(faceName = "sky", dir = "up") {
-        this.currentFace = faceName;
-        this.currentDir = dir;
+    getSpace(index) {
+        return this.spaces[index];
     }
+
+    setSpace(index, value) {
+        this.spaces[index] = value;
+    }
+
+    processMove(index) {
+        // based on current player place "X" or "O" in appropriate place
+        // change current player
+        if (this.getSpace(index) === " ") {
+            const mark = this.currentPlayer ? "X" : "O";
+            this.setSpace(index, mark);
+            this.currentPlayer = !this.currentPlayer;
+            //console.log("move processed: " + mark);
+            this.gui.updateSpace(index); // tell the gui to update
+        }
+    }
+
 }
 
 
@@ -169,12 +207,108 @@ class GUI {
     constructor(cube) {
         this.cube = cube;
         this.board = $("#cubeBoard");
+        for (const dir of GM.dirNames) {
+            const triggerFunction = () => { this.processRotate(dir) };
+            $("#" + dir + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
+        }
+        this.resetGame();
+        
+    }
 
+    setFace(face, dir) {
+        this.currentFace = face;
+        this.currentDir = dir;
+    }
+
+    getFace() { return this.currentFace; }
+
+    getDir() { return this.currentDir; }
+
+    resetGame(face = "sky", dir = "up") {
+        this.setFace(face, dir);
+        this.buildFace(face, dir);
+    }
+
+
+    processRotate(dir) {
+        // create new face
+        const transformMap = GM.transformMap;
+        const oldFace = this.currentFace;
+        const oldDir = this.currentDir;
+        
+        console.log("////////////////////////");
+        console.log("// old face: " + oldFace + " + " + oldDir);
+        const adjDir = GM.subDirs(dir, oldDir, "down"); // adjust current tilt with input direction
+        
+        console.log("// click dir: " + dir + " -> " + adjDir);
+        const [newFace, newDir] = transformMap[oldFace][adjDir];
+        const newAdjDir = GM.addDirs(newDir, oldDir);
+        
+        console.log("// new face: " + newFace + " + " + newDir + " -> " + newAdjDir);
+        this.buildFace(newFace, newAdjDir);
+        
+        // animate both faces
+        $(".face-" + oldFace).addClass("shrink-" + dir);
+        $(".face-" + newFace).addClass("grow-" + dir);
+        $(".face-" + newFace).show();
+        
+        // remove old face
+        setTimeout(() => {
+            $(".face-" + oldFace).hide();
+            $(".face-" + oldFace).remove();
+            this.setFace(newFace, newAdjDir);
+        }, 2000);
+    }
+
+    processMove(index) {
+        // pass around the event
+        this.cube.processMove(index);
+    }
+
+
+    buildFace(faceName, dir) {
+        const face = $("<div>", { class: "face face-" + faceName });
+        if (faceName !== this.cube.currentFace)
+            face.hide();
+        this.board.append(face);
+
+        const faceMap = GM.face(faceName, dir);
+        const gui = this;
+                
+        for (let x = 0; x < 3; x++) {
+            const row = $("<div>", { class: "row row" + x });
+            face.append(row);
+
+            for (let y = 0; y < 3; y++) {
+                const index = faceMap[x][y];
+                const value = this.cube.getSpace(index);
+                const triggerFunction = () => {
+                    gui.processMove(index);
+                    //console.log(index + ": " + value);
+                };
+
+                const space = $("<span>", { class: "space space" + index });
+                space.html(value);
+                space.on("click", triggerFunction);
+                row.append(space);
+        
+            }
+        }
+
+    }
+
+    updateSpace(index) {
+        const value = this.cube.getSpace(index);
+        const space = $(".space" + index);
+        space.html(value);
+        space.off("click");
+        //console.log("updated space " + index + " to " + value);
     }
 }
 
 
-// when dom is ready
-$(document).ready(function(){
-    const cube = new Cube();
+
+
+const cube = new Cube();
+
 });

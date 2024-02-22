@@ -1,18 +1,43 @@
-<html>
+<!DOCTYPE html>
 <head>
     <title>Cube</title>
     <link rel="stylesheet" href="cube.css"/>
 </head>
 <body>
 
+<div id="cubeBoard"></div>
 
-<div id="cubeBoard">
+<table id="dirPad">
+    <tr>
+        <td></td>
+        <td>
+            <button id="upButton">/\</button>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <button id="leftButton">&lt;</button>
+        </td>
+        <td></td>
+        <td>
+            <button id="rightButton">&gt;</button>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <button id="downButton">V</button>
+        </td>
+        <td></td>
+    </tr>
+</table>
 
-</div>
 
-<!-- react cdn -->
-<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<!-- jQueryyyy -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" 
+    integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" 
+    crossorigin="anonymous"></script>
 
 <script src="cube.js"></script>
 
