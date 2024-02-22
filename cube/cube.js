@@ -32,14 +32,14 @@ class GM {
     static clearBoard() {
         let spaces = [];
         for (i = 0; i < 27; i++) {
-            spaces[i] = i === 14 ? null : "";
+            spaces[i] = i === 14 ? null : ""; // 14 is the center of the cube and can't be played
         }
         return spaces;
     }
 
     static faceNames = ["north", "sky", "west", "south", "east", "ground"];
 
-    static dirNames = ["up", "right", "down", "left"];
+    static dirNames = ["up", "right", "down", "left"]; // indexOf will convert to turns of
 
     static randomFace() {
         const r = Math.floor(Math.random() * 6);
@@ -51,10 +51,10 @@ class GM {
         return this.dirNames[r];
     }
 
-    static addDirs(...dirs) {
+    static addDirs(...dirs) { // spread operator takes multiple dirs
         let output = 0; // 0 is up
-        for (dir of dirs) {
-            output += this.dirNames.indexOf(dir);
+        for (const dir of dirs) {
+            output += this.dirNames.indexOf(dir); // dir to num of turns
             output -= output > 3 ? 4 : 0; // if more than 3, then -4 else -0
         }
         output = this.dirNames[output]; // convert numb back to dir
@@ -71,17 +71,37 @@ class GM {
     };
 
     static transformMap = {
-        "north" = {"up" : ["ground", "up"], "right" ["east", "down"]: "down": ["sky", "up"], "left": ["west", "down"]},
-        "sky" = {"up" : ["north", "up"], "right" ["east", "left"]: "down": ["south", "up"], "left": ["west", "right"]},
-        "west" = {"up" : ["sky", "left"], "right" ["south", "up"]: "down": ["ground", "right"], "left": ["north", "down"]},
-        "south" = {"up" : ["sky", "up"], "right" ["east", "up"]: "down": ["ground", "up"], "left": ["west", "up"]},
-        "east" = {"up" : ["sky", "right"], "right" ["north", "down"]: "down": ["ground", "left"], "left": ["south", "up"]},
-        "ground" = {"up" : ["south", "up"], "right" ["east", "right"]: "down": ["north", "down"], "left": ["west", "left"]},
+        "north" : {"up" : ["ground", "up"], "right" ["east", "down"]: "down": ["sky", "up"], "left": ["west", "down"]},
+        "sky" : {"up" : ["north", "up"], "right" ["east", "left"]: "down": ["south", "up"], "left": ["west", "right"]},
+        "west" : {"up" : ["sky", "left"], "right" ["south", "up"]: "down": ["ground", "right"], "left": ["north", "down"]},
+        "south" : {"up" : ["sky", "up"], "right" ["east", "up"]: "down": ["ground", "up"], "left": ["west", "up"]},
+        "east" : {"up" : ["sky", "right"], "right" ["north", "down"]: "down": ["ground", "left"], "left": ["south", "up"]},
+        "ground" : {"up" : ["south", "up"], "right" ["east", "right"]: "down": ["north", "down"], "left": ["west", "left"]},
+    };
+
+    static winMap() {
+        const output= [];
+
+        for (const face of GM.faceMap) {
+            for (const x = 0; x <3; x++) {
+                output.push([ face[x][0], face[x][1], face[x][2] ],
+                    [ face[0][x], face[1][x], face[2][x] ]);
+            }
+            output.push([ face[0][0], face[1][1], face[2][2] ],
+                [ face[0][2], face[1][1], face[2][0] ]);
+        }
+
+        output = Array.from(new Set(output.map(JSON.stringify)), JSON.parse); // SO says this will remove duplicates, cool why not
+
+        return output;
     };
 
     static rotateFace(input, dir) { // input should be 3x3 array
-        let output = input; // up is default
-        if (dir === "right") {
+        let output;
+
+        if (dir === "up") { // up is default
+            output = input;
+        } else if (dir === "right") {
             output = [
                     [ input[2][0], input[1][0], input[0][0] ] ,
                     [ input[2][1], input[1][1], input[0][1] ] ,
@@ -100,6 +120,7 @@ class GM {
                     [ input[0][0], input[1][0], input[2][0] ]
                 ];
         }
+        
         return output;
     };
 
@@ -114,7 +135,7 @@ class GM {
 
     }
 
-    static winMap = [];
+    
 }
 
 
@@ -122,7 +143,7 @@ class GM {
 
 class Cube {
     constructor() {
-        this.clearBoard();
+        this.resetGame();
 
 
         this.gui = new GUI(cube = this);
@@ -130,14 +151,15 @@ class Cube {
 
 
 
-    clearBoard() {
+    resetGameGame() {
         this.spaces = GM.clearBoard();
+        this.currentPlayer = 0; // 1 is computer
         this.setFace(); // defaults
     }
 
-    setFace(faceName = "south", dir = null) {
+    setFace(faceName = "sky", dir = "up") {
         this.currentFace = faceName;
-        this.currentDir = dir ?? "up";
+        this.currentDir = dir;
     }
 }
 
@@ -147,7 +169,7 @@ class GUI {
     constructor(cube) {
         this.cube = cube;
         this.board = $("#cubeBoard");
-        
+
     }
 }
 
