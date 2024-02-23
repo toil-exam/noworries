@@ -19,6 +19,7 @@ west                                            east
                     25 26 27
                     22 23 24    ground
                     19 20 21
+up positions 
 
 */
 
@@ -34,7 +35,7 @@ class GM {
 
     static clearBoard() {
         let output = [];
-        for (let i = 0; i < 27; i++) {
+        for (let i = 1; i < 28; i++) { // there's no zero on the map whoops
             output[i] = i === 14 ? null : " "; // 14 is the center of the cube and can't be played
         }
         return output;
@@ -46,6 +47,10 @@ class GM {
 
     static dirNum(dir) {
         return this.dirNames.indexOf(dir);
+    }
+
+    static orientation(dir) {
+        return dir === "left" || dir === "right" ? "horizontal" : "vertical";
     }
 
     static randomFace() {
@@ -85,7 +90,7 @@ class GM {
     static faceMap = { // all in their "up" position
         "north" : [ [19,20,21], [10,11,12], [1,2,3] ],
         "sky" : [ [1,2,3], [4,5,6], [7,8,9] ],
-        "west" : [ [1,4,7], [10,13,16], [19,22,23] ],
+        "west" : [ [1,4,7], [10,13,16], [19,22,25] ],
         "south" : [ [7,8,9], [16,17,18], [25,26,27] ],
         "east" : [ [9,6,3], [18,15,12], [27,24,21] ],
         "ground" : [ [25,26,27], [22,23,24], [19,20,21] ]
@@ -236,28 +241,55 @@ class GUI {
         const oldFace = this.currentFace;
         const oldDir = this.currentDir;
         
-        console.log("////////////////////////");
-        console.log("// old face: " + oldFace + " + " + oldDir);
-        const adjDir = GM.subDirs(dir, oldDir, "down"); // adjust current tilt with input direction
+        //console.log("////////////////////////");
+        //console.log("// old face: " + oldFace + " + " + oldDir);
+        let adjDir = GM.subDirs(dir, oldDir); // adjust current tilt with input direction
+        adjDir = GM.antiDir(adjDir); // the map points in the direction of the face which is opposite to the input direction whoops
         
-        console.log("// click dir: " + dir + " -> " + adjDir);
+        //console.log("// click dir: " + dir + " -> " + adjDir);
         const [newFace, newDir] = transformMap[oldFace][adjDir];
         const newAdjDir = GM.addDirs(newDir, oldDir);
         
-        console.log("// new face: " + newFace + " + " + newDir + " -> " + newAdjDir);
-        this.buildFace(newFace, newAdjDir);
+        // adjust board area display : block vs inline pretty sure
+        const orientation = GM.orientation(dir);
+        let display;
+        if (orientation === "horizontal")
+            display = "flex";
+        else if (orientation === "vertical")
+            display = "block";
+        this.board.css("display", display);
+        
+        //console.log("// new face: " + newFace + " + " + newDir + " -> " + newAdjDir);
+        const prepend = dir === "down" || dir === "right";
+        this.buildFace(newFace, newAdjDir, prepend);
         
         // animate both faces
         $(".face-" + oldFace).addClass("shrink-" + dir);
         $(".face-" + newFace).addClass("grow-" + dir);
-        $(".face-" + newFace).show();
         
-        // remove old face
-        setTimeout(() => {
+        $(".face-" + newFace).on("animationend", () => {
+            // remove old face 
             $(".face-" + oldFace).hide();
             $(".face-" + oldFace).remove();
+            
             this.setFace(newFace, newAdjDir);
-        }, 2000);
+            // remove animation from new face
+            $(".face-" + newFace).removeClass("grow-" + dir);
+            $(".face-" + newFace).off("animationend"); // is this neccessary ??
+            $("#rightButton").removeClass("jolt-up jolt-left");
+            $("#downButton").removeClass("jolt-up-twice");
+            $("#leftButton").removeClass("jolt-up jolt-right");
+            });
+        $(".face-" + newFace).show(); // technically this fires before the animationend
+        
+        if (orientation === "horizontal") {
+            $("#rightButton").addClass("jolt-left");
+            $("#leftButton").addClass("jolt-right");
+        } else if (orientation === "vertical") {
+            $("#rightButton").addClass("jolt-up");
+            $("#downButton").addClass("jolt-up-twice");
+            $("#leftButton").addClass("jolt-up");
+        }
     }
 
     processMove(index) {
@@ -266,11 +298,11 @@ class GUI {
     }
 
 
-    buildFace(faceName, dir) {
+    buildFace(faceName, dir, prepend = false) {
         const face = $("<div>", { class: "face face-" + faceName });
         if (faceName !== this.cube.currentFace)
             face.hide();
-        this.board.append(face);
+        prepend ? this.board.prepend(face) : this.board.append(face);
 
         const faceMap = GM.face(faceName, dir);
         const gui = this;
@@ -282,14 +314,27 @@ class GUI {
             for (let y = 0; y < 3; y++) {
                 const index = faceMap[x][y];
                 const value = this.cube.getSpace(index);
-                const triggerFunction = () => {
+                const clickFunction = () => {
                     gui.processMove(index);
                     //console.log(index + ": " + value);
                 };
+                /*
+                const overFunction = () => {
+                    console.log("face: " + faceName + ", index: " + index);
+                };
+                */
 
-                const space = $("<span>", { class: "space space" + index });
-                space.html(value);
-                space.on("click", triggerFunction);
+                let mark = "no-mark";
+                if (value === "X") mark = "x-mark";
+                else if (value === "O") mark = "o-mark";
+
+                const space = $("<span>", { class: "space space-" + index + " " + mark});
+                const container = $("<span>", { class: "container container-" + index});
+                space.append(container);
+                container.html(value);
+                //space.html(value);
+                space.on("click", clickFunction);
+                //space.on("mouseover", overFunction);
                 row.append(space);
         
             }
@@ -299,8 +344,15 @@ class GUI {
 
     updateSpace(index) {
         const value = this.cube.getSpace(index);
-        const space = $(".space" + index);
-        space.html(value);
+        const space = $(".space-" + index);
+        const container = $(".container-" +index);
+        
+        let mark = "no-mark";
+        if (value === "X") mark = "x-mark";
+        else if (value === "O") mark = "o-mark";
+        space.removeClass("no-mark x-mark o-mark");
+        space.addClass(mark);
+        container.html(value);
         space.off("click");
         //console.log("updated space " + index + " to " + value);
     }
