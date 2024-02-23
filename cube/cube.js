@@ -54,12 +54,12 @@ class GM {
     }
 
     static randomFace() {
-        const r = Math.floor(Math.random() * 6);
+        const r = Math.floor( Math.random() * 6 );
         return this.faceNames[r];
     }
 
     static randomDir() {
-        const r = Math.floor(Math.random() * 4);
+        const r = Math.floor( Math.random() * 4 );
         return this.dirNames[r];
     }
 
@@ -106,10 +106,11 @@ class GM {
     };
 
     static winMap() {
-        const output= [];
+        let output= [];
 
-        for (const face of GM.faceMap) {
-            for (const x = 0; x <3; x++) {
+        for (const faceName of this.faceNames) {
+            let face = this.faceMap[faceName];
+            for (let x = 0; x <3; x++) {
                 output.push([ face[x][0], face[x][1], face[x][2] ],
                     [ face[0][x], face[1][x], face[2][x] ]);
             }
@@ -118,7 +119,7 @@ class GM {
         }
 
         output = Array.from(new Set(output.map(JSON.stringify)), JSON.parse); // SO says this will remove duplicates, cool why not
-
+        //console.log(output);
         return output;
     };
 
@@ -157,6 +158,24 @@ class GM {
         return output;
     }
 
+    static indexInFace(index, faceName) {
+        const face = this.faceMap[faceName];
+        for (let x = 0; x < 3; x++) {
+            for (let y = 0; y < 3; y++) {
+                if (index == face[x][y]) {
+                
+                //let row = face[x];
+                //if (row.includes(index)) {
+                    console.log("index: " + index + " in face: " + faceName);
+                    return true;
+                
+                }
+            }
+        }
+        console.log("index: " + index + " NOT in face: " + faceName);
+        return false;
+    }
+
     static faceTransform(faceName, dir) {
 
     }
@@ -170,12 +189,9 @@ class GM {
 class Cube {
     constructor() {
         this.resetGame();
-
-
         this.gui = new GUI(this);
+        this.ai = new AI(this);
     }
-
-
 
     resetGame() {
         this.spaces = GM.clearBoard();
@@ -188,23 +204,141 @@ class Cube {
         return this.spaces[index];
     }
 
+    getSpaces() {
+        return this.spaces;
+    }
+
     setSpace(index, value) {
         this.spaces[index] = value;
     }
 
-    processMove(index) {
-        // based on current player place "X" or "O" in appropriate place
-        // change current player
-        if (this.getSpace(index) === " ") {
-            const mark = this.currentPlayer ? "X" : "O";
+    processPlayerMove(index) {
+        // process player input from the gui, always from player input yeah?
+        if (this.currentPlayer && this.getSpace(index) === " ") {
+            const mark = "X";
             this.setSpace(index, mark);
-            this.currentPlayer = !this.currentPlayer;
+            this.currentPlayer = false;
             //console.log("move processed: " + mark);
             this.gui.updateSpace(index); // tell the gui to update
+
+            this.triggerAI();
         }
     }
 
+    triggerAI() {
+        const nextPlay = this.ai.play();
+
+        if (!GM.indexInFace(nextPlay, this.currentFace)) {
+            // not on current face
+            let side = "";
+            let move = "";
+            let face;
+            for (const dir of GM.dirNames) {
+                face = GM.transformMap[this.currentFace][dir];
+                face = face[0];
+                if (face && GM.indexInFace(nextPlay, face)) {
+                    side = face;
+                    move = dir;
+                    break;
+                }
+            }
+            if (side !== "") {
+                move = GM.subDirs(move, this.currentDir, "down");
+                setTimeout(() => this.gui.processRotate(move), 1000);
+            } else {
+                move = GM.randomDir();
+                setTimeout(() => this.gui.processRotate(move), 1000);
+                setTimeout(() => this.gui.processRotate(move), 2000);
+            }
+        }
+
+        const mark = "O";
+        setTimeout(this.setSpace(nextPlay, mark), 3000);
+        this.currentPlayer = true;
+        setTimeout(this.gui.updateSpace(nextPlay), 4000);
+
+    }
+
 }
+
+
+
+class AI {
+    constructor(cube) {
+        this.cube = cube;
+        this.winmap = GM.winMap(); // store it so it's not being run over and over
+    }
+
+    play() {
+        const spaces = this.cube.getSpaces();
+
+        let rankMap = {};
+        let temp, pc, ai, stamp, r, win, w, x;
+
+        for (w = 0; w < this.winmap.length; w++) {
+            win = this.winmap[w];
+            pc = 0;
+            ai = 0;
+            for (x = 0; x < 3; x++) {
+                const value = spaces[win[x]];
+                if (value === "X") pc++;
+                else if (value === "O") ai++;
+            }
+            temp = "pc" + pc + "ai" + ai;
+            if (!rankMap[temp])
+                rankMap[temp] = [];
+            rankMap[temp].push(win); // and then push the wincon
+        }
+
+        console.log(rankMap);
+
+        if (rankMap["pc2ai0"]) {
+            // where player has two marks and thus ai has to block
+            r = Math.floor( Math.random() * rankMap["pc2ai0"].length );
+            win = rankMap["pc2ai0"][r];
+            for (x of win) {
+                if (this.cube.getSpace(x) === " ") {
+                    console.log("ai plays: " + x);
+                    return x; // returns play()
+                }
+            }
+        } else if (rankMap["pc0ai2"]) {
+            // where the ai has two marks and thus a third would clench
+            r = Math.floor( Math.random() * rankMap["pc0ai2"].length );
+            win = rankMap["pc0ai2"][r];
+            for (x of win) {
+                if (this.cube.getSpace(x) === " ") {
+                    console.log("ai plays: " + x);
+                    return x; // returns play()
+                }
+            }
+        } else if (rankMap["pc0ai1"]) {
+            // where only the ai has a mark, aiming to set up for three in a row
+            r = Math.floor( Math.random() * rankMap["pc0ai1"].length );
+            win = rankMap["pc0ai1"][r];
+            temp = [];
+            for (x of win) {
+                if (this.cube.getSpace(x) === " ")
+                    temp.push(x);
+            }
+            const play = Math.floor( Math.random() * temp.length );
+            console.log("ai plays: " + temp[play]);
+            return temp[play];
+        } // chain off any further plays i guess
+
+        // default, random empty
+        temp = [];
+        for (x = 1; x < 28; x++) {
+            if (spaces[x] === " ") 
+                temp.push(x);
+        }
+        r = Math.floor( Math.random() * temp.length );
+        console.log("ai plays: " + temp[r]);
+        return temp[r];
+    }
+}
+
+
 
 
 
@@ -216,6 +350,19 @@ class GUI {
             const triggerFunction = () => { this.processRotate(dir) };
             $("#" + dir + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
         }
+
+        // bind arrow keys 
+        $(document).keydown((e) => {
+            if (e.which === 38) 
+                this.processRotate("up");
+            else if (e.which === 39) 
+                this.processRotate("right");
+            else if (e.which === 40) 
+                this.processRotate("down");
+            else if (e.which === 37) 
+                this.processRotate("left");
+        });
+
         this.resetGame();
         
     }
@@ -292,11 +439,6 @@ class GUI {
         }
     }
 
-    processMove(index) {
-        // pass around the event
-        this.cube.processMove(index);
-    }
-
 
     buildFace(faceName, dir, prepend = false) {
         const face = $("<div>", { class: "face face-" + faceName });
@@ -315,7 +457,7 @@ class GUI {
                 const index = faceMap[x][y];
                 const value = this.cube.getSpace(index);
                 const clickFunction = () => {
-                    gui.processMove(index);
+                    gui.processPlayerMove(index);
                     //console.log(index + ": " + value);
                 };
                 /*
@@ -340,6 +482,11 @@ class GUI {
             }
         }
 
+    }
+
+    processPlayerMove(index) {
+        // pass around the event
+        this.cube.processPlayerMove(index);
     }
 
     updateSpace(index) {
