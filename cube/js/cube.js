@@ -1,10 +1,12 @@
 
-import {GUI} from "/cube/js/gui.js";
-import {AI} from "/cube/js/ai.js";
-import {GM} from "/cube/js/gm.js";
+import { GM } from "/cube/js/gm.js";
+import { GUI } from "/cube/js/gui.js";
+import { AI } from "/cube/js/ai.js";
+
 
 // when dom is ready
 $(document).ready(function(){
+
 
 class Cube {
     constructor() {

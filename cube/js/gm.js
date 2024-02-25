@@ -23,7 +23,11 @@ up positions
 
 */
 
-export default class GM {
+export class GM {
+
+    constructor() {
+        return this;
+    }
 
     static clearBoard() {
         let output = [];

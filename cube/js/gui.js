@@ -1,8 +1,10 @@
 
 
+import { GM } from "/cube/js/gm.js";
 
 
-export default class GUI {
+
+export class GUI {
     constructor(cube) {
         this.cube = cube;
         this.board = $("#cubeBoard");

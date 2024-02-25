@@ -1,6 +1,9 @@
 
 
-export default class AI {
+import { GM } from "/cube/js/gm.js";
+
+
+export class AI {
     constructor(cube) {
         this.cube = cube;
         this.winmap = GM.winMap(); // store it so it's not being run over and over
