@@ -19,6 +19,11 @@
     --border-round: 5px;
 
     --text-size: calc(var(--space-size) * 0.9);
+
+
+
+    --x-color: #84f056;
+    --o-color: #d41558;
 }
 
 body {
@@ -80,15 +85,15 @@ button {
 }
 
 .x-mark {
-    background-color: #0066ff;
-    color: white;
-    border: var(--border-size) solid white;
+    background-color: var(--x-color);
+    color: #333;
+    border: var(--border-size) solid var(--x-color);
 }
 
 .o-mark {
-    background-color: #ff6600;
-    color: black;
-    border: var(--border-size) solid #333;
+    background-color: #333;
+    color: var(--o-color);
+    border: var(--border-size) solid var(--o-color);
 }
 
 .no-mark {
