@@ -102,20 +102,20 @@ export class GM {
     };
 
     static winMap() {
-        let output= [];
+        let output= new Set();
 
         for (const faceName of this.faceNames) {
             let face = this.faceMap[faceName];
             for (let x = 0; x <3; x++) {
-                output.push([ face[x][0], face[x][1], face[x][2] ],
+                output.add([ face[x][0], face[x][1], face[x][2] ],
                     [ face[0][x], face[1][x], face[2][x] ]);
             }
-            output.push([ face[0][0], face[1][1], face[2][2] ],
+            output.add([ face[0][0], face[1][1], face[2][2] ],
                 [ face[0][2], face[1][1], face[2][0] ]);
         }
 
-        output = Array.from(new Set(output.map(JSON.stringify)), JSON.parse); // SO says this will remove duplicates, cool why not
-        //console.log(output);
+        //output = Array.from(this.winMap);
+        console.log(output);
         return output;
     };
 
@@ -154,6 +154,15 @@ export class GM {
         return output;
     }
 
+    static faceIndexes(face) {
+        let output = [];
+        for (const row of GM.face(face)) {
+            output.push([...row]);
+        }
+        console.log("face indexes: " + face + ", output: " + output);
+        return output;
+    }
+
     static indexInFace(index, faceName) {
         const face = this.faceMap[faceName];
         for (let x = 0; x < 3; x++) {
@@ -162,13 +171,13 @@ export class GM {
                 
                 //let row = face[x];
                 //if (row.includes(index)) {
-                    console.log("index: " + index + " in face: " + faceName);
+                    console.log("index: " + index + " is in face: " + faceName);
                     return true;
                 
                 }
             }
         }
-        console.log("index: " + index + " NOT in face: " + faceName);
+        console.log("index: " + index + " is NOT in face: " + faceName);
         return false;
     }
 

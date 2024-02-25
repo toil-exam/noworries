@@ -12,46 +12,61 @@ export class AI {
     play() {
         const spaces = this.cube.getSpaces();
 
-        let rankMap = {};
-        let temp, pc, ai, stamp, r, win, w, x;
+        let rankMap = [];
+        let temp, pc, ai, r, win, w, x;
 
-        for (w = 0; w < this.winmap.length; w++) {
-            win = this.winmap[w];
+        //for (w = 0; w < this.winmap.length; w++) {
+            //win = this.winmap[w];
+        for (const win of this.winmap) {
             pc = 0;
             ai = 0;
+            
             for (x = 0; x < 3; x++) {
                 const value = spaces[win[x]];
                 if (value === "X") pc++;
                 else if (value === "O") ai++;
             }
+
             temp = "pc" + pc + "ai" + ai;
             if (!rankMap[temp])
-                rankMap[temp] = [];
+                rankMap[temp] =  [];
             rankMap[temp].push(win); // and then push the wincon
         }
 
         console.log(rankMap);
 
-        if (rankMap["pc2ai0"]) {
-            // where player has two marks and thus ai has to block
-            r = Math.floor( Math.random() * rankMap["pc2ai0"].length );
-            win = rankMap["pc2ai0"][r];
-            for (x of win) {
-                if (this.cube.getSpace(x) === " ") {
-                    console.log("ai plays: " + x);
-                    return x; // returns play()
-                }
-            }
-        } else if (rankMap["pc0ai2"]) {
+        if (rankMap["pc0ai2"]) {
             // where the ai has two marks and thus a third would clench
             r = Math.floor( Math.random() * rankMap["pc0ai2"].length );
             win = rankMap["pc0ai2"][r];
             for (x of win) {
                 if (this.cube.getSpace(x) === " ") {
-                    console.log("ai plays: " + x);
+                    console.log("pc0ai2 // ai plays: " + x);
                     return x; // returns play()
                 }
             }
+        } else if (rankMap["pc2ai0"]) {
+            // where player has two marks and thus ai has to block
+            r = Math.floor( Math.random() * rankMap["pc2ai0"].length );
+            win = rankMap["pc2ai0"][r];
+            for (x of win) {
+                if (this.cube.getSpace(x) === " ") {
+                    console.log("pc2ai0 // ai plays: " + x);
+                    return x; // returns play()
+                }
+            }
+        } else if (rankMap["pc1ai0"]) {
+            // pc has already played, block them
+            r = Math.floor( Math.random() * rankMap["pc1ai0"].length );
+            win = rankMap["pc1ai0"][r];
+            temp = [];
+            for (x of win) {
+                if (this.cube.getSpace(x) === " ")
+                    temp.push(x);
+            }
+            const play = Math.floor( Math.random() * temp.length );
+            console.log("pc1ai0 // ai plays: " + temp[play]);
+            return temp[play]; // returns play()
         } else if (rankMap["pc0ai1"]) {
             // where only the ai has a mark, aiming to set up for three in a row
             r = Math.floor( Math.random() * rankMap["pc0ai1"].length );
@@ -62,9 +77,9 @@ export class AI {
                     temp.push(x);
             }
             const play = Math.floor( Math.random() * temp.length );
-            console.log("ai plays: " + temp[play]);
+            console.log("pc0ai0 // ai plays: " + temp[play]);
             return temp[play];
-        } // chain off any further plays i guess
+        }// chain off any further plays i guess
 
         // default, random empty
         temp = [];
@@ -73,7 +88,7 @@ export class AI {
                 temp.push(x);
         }
         r = Math.floor( Math.random() * temp.length );
-        console.log("ai plays: " + temp[r]);
+        console.log("pc0ai0 // ai plays: " + temp[r]);
         return temp[r];
     }
 }

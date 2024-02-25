@@ -37,6 +37,8 @@ class Cube {
     processPlayerMove(index) {
         // process player input from the gui, always from player input yeah?
         if (this.currentPlayer && this.getSpace(index) === " ") {
+            this.gui.deactivateFace();
+
             const mark = "X";
             this.setSpace(index, mark);
             this.currentPlayer = false;
@@ -49,6 +51,7 @@ class Cube {
 
     triggerAI() {
         const nextPlay = this.ai.play();
+        console.log("current face: " + this.currentFace);
 
         if (!GM.indexInFace(nextPlay, this.currentFace)) {
             // not on current face
@@ -61,23 +64,28 @@ class Cube {
                 if (face && GM.indexInFace(nextPlay, face)) {
                     side = face;
                     move = dir;
-                    break;
+                    if (face === this.currentFace)
+                        break;
                 }
             }
             if (side !== "") {
-                move = GM.subDirs(move, this.currentDir, "down");
-                setTimeout(() => this.gui.processRotate(move), 1000);
+                move = GM.subDirs(move, this.currentDir);
+                move = GM.antiDir(move);
+                setTimeout(() => this.gui.processRotate(move), 500);
             } else {
                 move = GM.randomDir();
-                setTimeout(() => this.gui.processRotate(move), 1000);
-                setTimeout(() => this.gui.processRotate(move), 2000);
+                setTimeout(() => this.gui.processRotate(move), 250);
+                setTimeout(() => this.gui.processRotate(move), 250);
             }
         }
 
         const mark = "O";
-        setTimeout(this.setSpace(nextPlay, mark), 3000);
+        setTimeout(() => this.setSpace(nextPlay, mark), 750);
         this.currentPlayer = true;
-        setTimeout(this.gui.updateSpace(nextPlay), 4000);
+        setTimeout(() => {
+            this.gui.updateSpace(nextPlay)
+            this.gui.activateFace();
+        }, 1000);
 
     }
 

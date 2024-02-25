@@ -10,7 +10,7 @@ export class GUI {
         this.board = $("#cubeBoard");
         for (const dir of GM.dirNames) {
             const triggerFunction = () => { this.processRotate(dir) };
-            $("#" + dir + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
+            $("#" + GM.antiDir(dir) + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
         }
 
         // bind arrow keys 
@@ -24,6 +24,10 @@ export class GUI {
             else if (e.which === 37) 
                 this.processRotate("left");
         });
+
+        $("#overScreen").one("click", () => {
+            $("#overScreen").hide();
+        })
 
         this.resetGame();
         
@@ -41,6 +45,7 @@ export class GUI {
     resetGame(face = "sky", dir = "up") {
         this.setFace(face, dir);
         this.buildFace(face, dir);
+        this.activateFace();
     }
 
 
@@ -76,7 +81,7 @@ export class GUI {
         $(".face-" + oldFace).addClass("shrink-" + dir);
         $(".face-" + newFace).addClass("grow-" + dir);
         
-        $(".face-" + newFace).on("animationend", () => {
+        $(".face-" + newFace).one("animationend", () => {
             // remove old face 
             $(".face-" + oldFace).hide();
             $(".face-" + oldFace).remove();
@@ -84,7 +89,6 @@ export class GUI {
             this.setFace(newFace, newAdjDir);
             // remove animation from new face
             $(".face-" + newFace).removeClass("grow-" + dir);
-            $(".face-" + newFace).off("animationend"); // is this neccessary ??
             $("#rightButton").removeClass("jolt-up jolt-left");
             $("#downButton").removeClass("jolt-up-twice");
             $("#leftButton").removeClass("jolt-up jolt-right");
@@ -118,10 +122,10 @@ export class GUI {
             for (let y = 0; y < 3; y++) {
                 const index = faceMap[x][y];
                 const value = this.cube.getSpace(index);
-                const clickFunction = () => {
-                    gui.processPlayerMove(index);
+                //const clickFunction = () => {
+                    //gui.processPlayerMove(index);
                     //console.log(index + ": " + value);
-                };
+                //};
                 /*
                 const overFunction = () => {
                     console.log("face: " + faceName + ", index: " + index);
@@ -137,7 +141,7 @@ export class GUI {
                 space.append(container);
                 container.html(value);
                 //space.html(value);
-                space.on("click", clickFunction);
+                //space.one("click", clickFunction);
                 //space.on("mouseover", overFunction);
                 row.append(space);
         
@@ -145,6 +149,25 @@ export class GUI {
         }
 
     }
+
+    activateFace() {
+        let face = this.currentFace;
+        face = GM.faceIndexes(face);
+        const gui = this.gui;
+        for (const index in face) {
+            if (this.cube.getSpace(index) === " ") {
+                const clickFunction = () => {
+                    this.processPlayerMove(index);
+                };
+                $(".space-" + index).one("click", clickFunction);
+            }
+        }
+    }
+
+    deactivateFace() {
+        $(".space").off("click");
+    }
+
 
     processPlayerMove(index) {
         // pass around the event
