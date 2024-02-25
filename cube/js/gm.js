@@ -98,24 +98,28 @@ export class GM {
         "west" : {"up" : ["sky", "left"], "right" : ["south", "up"], "down": ["ground", "right"], "left": ["north", "down"]},
         "south" : {"up" : ["sky", "up"], "right" : ["east", "up"], "down": ["ground", "up"], "left": ["west", "up"]},
         "east" : {"up" : ["sky", "right"], "right" : ["north", "down"], "down": ["ground", "left"], "left": ["south", "up"]},
-        "ground" : {"up" : ["south", "up"], "right" : ["east", "right"], "down": ["north", "down"], "left": ["west", "left"]},
+        "ground" : {"up" : ["south", "up"], "right" : ["east", "right"], "down": ["north", "up"], "left": ["west", "left"]},
     };
 
     static winMap() {
-        let output= new Set();
+        let output = [];
+        const sortFunc = (a, b) => {
+            return a - b;
+        };
 
         for (const faceName of this.faceNames) {
             let face = this.faceMap[faceName];
             for (let x = 0; x <3; x++) {
-                output.add([ face[x][0], face[x][1], face[x][2] ],
-                    [ face[0][x], face[1][x], face[2][x] ]);
+                output.push([ face[x][0], face[x][1], face[x][2] ].sort(sortFunc));
+                output.push([ face[0][x], face[1][x], face[2][x] ].sort(sortFunc));
             }
-            output.add([ face[0][0], face[1][1], face[2][2] ],
-                [ face[0][2], face[1][1], face[2][0] ]);
+            output.push([ face[0][0], face[1][1], face[2][2] ].sort(sortFunc));
+            output.push([ face[0][2], face[1][1], face[2][0] ].sort(sortFunc));
         }
 
-        //output = Array.from(this.winMap);
-        console.log(output);
+        output = Array.from(new Set(output.map(JSON.stringify)), JSON.parse); // so says this will remove duplicates 
+        
+        //console.log(output);
         return output;
     };
 
@@ -157,27 +161,32 @@ export class GM {
     static faceIndexes(face) {
         let output = [];
         for (const row of GM.face(face)) {
-            output.push([...row]);
+            output.push(...row);
         }
-        console.log("face indexes: " + face + ", output: " + output);
+        //console.log("face indexes: " + face + ", output: " + output);
         return output;
     }
 
     static indexInFace(index, faceName) {
-        const face = this.faceMap[faceName];
-        for (let x = 0; x < 3; x++) {
-            for (let y = 0; y < 3; y++) {
-                if (index == face[x][y]) {
+        const face = this.faceIndexes(faceName);
+        if (face.includes(index)) {
+            console.log("index: " + index + " is in face: " + faceName + " " + face);
+            return true;
+        }
+        //const face = this.faceMap[faceName];
+        //for (let x = 0; x < 3; x++) {
+            //for (let y = 0; y < 3; y++) {
+                //if (index == face[x][y]) {
                 
                 //let row = face[x];
                 //if (row.includes(index)) {
-                    console.log("index: " + index + " is in face: " + faceName);
-                    return true;
+                    //console.log("index: " + index + " is in face: " + faceName);
+                    //return true;
                 
-                }
-            }
-        }
-        console.log("index: " + index + " is NOT in face: " + faceName);
+                //}
+            //}
+        //}
+        console.log("index: " + index + " is NOT in face: " + faceName + " " + face);
         return false;
     }
 

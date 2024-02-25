@@ -18,8 +18,6 @@ class Cube {
     resetGame() {
         this.spaces = GM.clearBoard();
         this.currentPlayer = true; // false is computer
-        this.currentFace = "sky"; // default
-        this.currentDir = "up"; // default
     }
 
     getSpace(index) {
@@ -32,12 +30,14 @@ class Cube {
 
     setSpace(index, value) {
         this.spaces[index] = value;
+        this.gui.updateScore();
     }
 
     processPlayerMove(index) {
         // process player input from the gui, always from player input yeah?
         if (this.currentPlayer && this.getSpace(index) === " ") {
             this.gui.deactivateFace();
+            this.gui.activateAIScreen();
 
             const mark = "X";
             this.setSpace(index, mark);
@@ -51,25 +51,25 @@ class Cube {
 
     triggerAI() {
         const nextPlay = this.ai.play();
-        console.log("current face: " + this.currentFace);
+        console.log("current face: " + this.gui.getFace());
 
-        if (!GM.indexInFace(nextPlay, this.currentFace)) {
+        if (!GM.indexInFace(nextPlay, this.gui.getFace())) {
             // not on current face
             let side = "";
             let move = "";
             let face;
             for (const dir of GM.dirNames) {
-                face = GM.transformMap[this.currentFace][dir];
+                face = GM.transformMap[this.gui.getFace()][dir];
                 face = face[0];
                 if (face && GM.indexInFace(nextPlay, face)) {
                     side = face;
                     move = dir;
-                    if (face === this.currentFace)
+                    if (face === this.gui.getFace())
                         break;
                 }
             }
             if (side !== "") {
-                move = GM.subDirs(move, this.currentDir);
+                move = GM.addDirs(move, this.gui.getDir());
                 move = GM.antiDir(move);
                 setTimeout(() => this.gui.processRotate(move), 500);
             } else {
@@ -85,12 +85,37 @@ class Cube {
         setTimeout(() => {
             this.gui.updateSpace(nextPlay)
             this.gui.activateFace();
-        }, 1000);
+            this.gui.deactivateAIScreen();
+            console.log("current face: " + this.gui.getFace());
+        }, 2000);
 
     }
 
-}
 
+    
+    getScore() {
+        const space = this.getSpaces();
+        //const winmap = GM.winMap();
+        let pc = 0;
+        let ai = 0;
+        //console.log(space);
+        for (const win of GM.winMap()) {
+            //console.log(win);
+            //console.log(space[win[0]]);
+            //console.log(space[win[1]]);
+            //console.log(space[win[2]]);
+            if (space[win[0]] === "X" && space[win[1]] === "X" && space[win[2]] === "X")
+                pc++;
+            if (space[win[0]] === "O" && space[win[1]] === "O" && space[win[2]] === "O")
+                ai++;
+        }
+        const score = {"pc" : pc, "ai" : ai };
+        //console.log(score);
+        return score;
+    }
+
+
+}
 
 
 

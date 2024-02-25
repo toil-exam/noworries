@@ -33,7 +33,7 @@ export class AI {
             rankMap[temp].push(win); // and then push the wincon
         }
 
-        console.log(rankMap);
+        //console.log(rankMap);
 
         if (rankMap["pc0ai2"]) {
             // where the ai has two marks and thus a third would clench
