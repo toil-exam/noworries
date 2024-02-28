@@ -38,14 +38,14 @@ body {
 
 button {
     position: relative;
-    font-size: var(--text-size);
+    font-size: var(--half-text-size);
     background-color: #666;
     color: #999;
     border: var(--border-size) solid #333;
 }
 
-#upButton, #downButton {width: var(--face-size); }
-#leftButton, #rightButton {height: var(--face-size); }
+#upButton, #downButton {width: var(--face-size); height: var(--space-size); }
+#leftButton, #rightButton {width: var(--space-size); height: var(--face-size); }
 
 .jolt-up {top: var(--minus-half-face-size); }
 .jolt-up-twice {top: var(--minus-face-size); }
