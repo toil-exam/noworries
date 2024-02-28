@@ -45,7 +45,7 @@ export class GM {
             else if (i === 14)
                 continue;
             else
-                output[i] = i % 2 === 0 ? "X" : "O";
+                output[i] = i % 2 === 1 ? "X" : "O";
         }
         return output;
     }

@@ -77,12 +77,12 @@ class Cube {
             } else {
                 move = GM.randomDir();
                 this.gui.processRotate(move);
-                setTimeout(() => this.gui.processRotate(move), 250);
+                setTimeout(() => this.gui.processRotate(move), 500);
             }
         }
 
         const mark = "O";
-        setTimeout(() => this.setSpace(nextPlay, mark), 500);
+        setTimeout(() => this.setSpace(nextPlay, mark), 750);
         this.setPlayer(true);
         setTimeout(() => {
             this.gui.updateSpace(nextPlay)
@@ -121,11 +121,9 @@ class Cube {
         }
         const { pc, ai } = this.getCurrentScore();
 
-        console.log(this.score);
         this.score["pc"] += pc;
         this.score["ai"] += ai;
-        console.log(this.score);
-
+        
         this.gui.gameOver();
         return true;
     }

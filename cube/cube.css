@@ -37,6 +37,7 @@
 
     --text-size: calc(var(--space-size) * 0.9);
     --half-text-size: calc(var(--text-size) / 2);
+    --quarter-text-size: calc(var(--text-size) / 4);
 
 
 
@@ -50,6 +51,7 @@ body {
     display: flex;
     justify-content: center;
     text-align: center;
+    font-family: sans-serif;
 }
 
 button {
@@ -62,6 +64,13 @@ button {
 
 #upButton, #downButton {width: var(--face-size); height: var(--space-size); }
 #leftButton, #rightButton {width: var(--space-size); height: var(--face-size); }
+
+#continueButton {
+    width: var(--face-size);
+    background-color: #666;
+    color: #333;
+    border: var(--border-size) solid #999;    
+}
 
 .td-board {
     padding: var(--half-space-size);
@@ -93,10 +102,9 @@ button {
 
 #overScreen {
     z-index: 5;
-    color: #ccc;
     background-color: #333;
-    opacity: 0.6;
-    font-size: var(--half-text-size);
+    opacity: 0.8;
+    font-size: var(--quarter-text-size);
     padding-top: 10vh;
 }
 
@@ -118,6 +126,10 @@ button {
     display: none;
     justify-content: center;
     text-align: center;
+}
+
+#gameOverScreen table {
+    padding-bottom: var(--half-space-size);
 }
 
 #gameOverScreen td {

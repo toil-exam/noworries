@@ -33,14 +33,11 @@ export class GUI {
             }
         });
 
-        //$("#overScreen").one("click", () => {
+        $("#overScreen").one("click", () => {
             $("#overScreen").hide();
-        //});
+        });
 
-        //this.deactivateAIScreen();
-
-        this.resetGame();
-        
+        this.resetGame();        
     }
 
     setFace(face, dir) {
@@ -54,6 +51,7 @@ export class GUI {
     getDir() { return this.currentDir; }
 
     resetGame(face = "sky", dir = "up") {
+        this.updateScore();
         const faces = $(".face");
         if (faces.length > 0) {
             faces.hide();
@@ -239,10 +237,23 @@ export class GUI {
         $("#pc-game-over-score").text(pc);
         $("#ai-game-over-score").text(ai);
 
-        let { "pc": pcTotal, "ai": aiTotal } = this.cube.getTotalScore();
-        console.log(pcTotal);
-        console.log(aiTotal);
+        let message = "Tie Game";
+        let color = null;
+        if (pc > ai) {
+            message = "You Win!";
+            color = "x"
+        } else if (ai > pc) {
+            message = "Computer Wins";
+            color = "o";
+        }
 
+        $("#game-over-message").text(message);
+        if (color)
+            $("#game-over-message").addClass(color + "-color");
+        else
+            $("#game-over-message").removeClass("x-color o-color");
+
+        let { "pc": pcTotal, "ai": aiTotal } = this.cube.getTotalScore();
         $("#pc-total-score").text(pcTotal);
         $("#ai-total-score").text(aiTotal);
 
