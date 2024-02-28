@@ -97,27 +97,11 @@ export class GUI {
             gui.setFace(newFace, newAdjDir);
             // remove animation from new face
             $("#face-" + newFace).removeClass("grow-" + dir);
-            $("#leftButton").removeClass("jolt-up jolt-right");
-            $("#downButton").removeClass("jolt-up-twice");
-            $("#rightButton").removeClass("jolt-up jolt-left");
-            $(".pc-score").removeClass("jolt-right");
-            $(".ai-score").removeClass("jolt-left");
-
+            
             if (gui.cube.currentPlayer)
                 gui.activateFace();
         });
         $("#face-" + newFace).show(); // technically this fires before the animationend
-        
-        if (orientation === "horizontal") {
-            $("#leftButton").addClass("jolt-right");
-            $("#rightButton").addClass("jolt-left");
-            $(".pc-score").addClass("jolt-right");
-            $(".ai-score").addClass("jolt-left");
-        } else if (orientation === "vertical") {
-            $("#leftButton").addClass("jolt-up");
-            $("#downButton").addClass("jolt-up-twice");
-            $("#rightButton").addClass("jolt-up");
-        }
     }
 
 

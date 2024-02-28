@@ -47,17 +47,19 @@ button {
 #upButton, #downButton {width: var(--face-size); height: var(--space-size); }
 #leftButton, #rightButton {width: var(--space-size); height: var(--face-size); }
 
-.jolt-up {top: var(--minus-half-face-size); }
-.jolt-up-twice {top: var(--minus-face-size); }
-.jolt-right {left: var(--half-face-size); }
-.jolt-left {left: var(--minus-half-face-size); }
-
 .td-board {
     padding: var(--half-space-size);
 }
 
-#cubeBoard {
+#faceSpace {
     position: relative;
+    width: var(--face-size);
+    height: var(--face-size);
+}
+
+#cubeBoard {
+    position: absolute;
+    top: var(--half-face-size); 
 }
 
 #dirPad {
