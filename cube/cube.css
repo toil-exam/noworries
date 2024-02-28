@@ -1,8 +1,22 @@
 
+@media screen and (orientation:portrait) {
+    :root{
+        --space-size: calc(100vw / 7);
+    }
+}
+
+@media screen and (orientation:landscape) {
+    :root{
+        --space-size: calc(100vh / 7);
+    }
+}
+
+
+
 :root {
     --standard-animation: 0.5s linear 0s 1 normal;
 
-    --space-size: 100px;
+    /* --space-size: 100px; */
     --minus-space-size: calc(0px - var(--space-size));
 
     --face-size: calc(var(--space-size) * 3);
