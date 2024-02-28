@@ -37,6 +37,19 @@ export class GM {
         return output;
     }
 
+    static gameOverTestBoard() {
+        let output = [];
+        for (let i = 1; i < 28; i++) {
+            if (i === 1)
+                output[i] = " "; // skip
+            else if (i === 14)
+                continue;
+            else
+                output[i] = i % 2 === 0 ? "X" : "O";
+        }
+        return output;
+    }
+
     static faceNames = ["north", "sky", "west", "south", "east", "ground"];
 
     static dirNames = ["up", "right", "down", "left"]; // indexOf will convert to turns of
@@ -170,28 +183,11 @@ export class GM {
     static indexInFace(index, faceName) {
         const face = this.faceIndexes(faceName);
         if (face.includes(index)) {
-            console.log("index: " + index + " is in face: " + faceName + " " + face);
+            //console.log("index: " + index + " is in face: " + faceName + " " + face);
             return true;
         }
-        //const face = this.faceMap[faceName];
-        //for (let x = 0; x < 3; x++) {
-            //for (let y = 0; y < 3; y++) {
-                //if (index == face[x][y]) {
-                
-                //let row = face[x];
-                //if (row.includes(index)) {
-                    //console.log("index: " + index + " is in face: " + faceName);
-                    //return true;
-                
-                //}
-            //}
-        //}
-        console.log("index: " + index + " is NOT in face: " + faceName + " " + face);
+        //console.log("index: " + index + " is NOT in face: " + faceName + " " + face);
         return false;
-    }
-
-    static faceTransform(faceName, dir) {
-
     }
 
     

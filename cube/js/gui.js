@@ -9,22 +9,28 @@ export class GUI {
         this.cube = cube;
         this.board = $("#cubeBoard");
         this.dotInterval;
-
+        this.lock = true;
+        
         for (const dir of GM.dirNames) {
-            const triggerFunction = () => { this.processRotate(dir) };
-            $("#" + GM.antiDir(dir) + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
+            const triggerFunction = () => { 
+                if (this.isUnlocked())
+                    this.processRotate(dir) 
+            };
+            $("#" + dir + "Button").on("click", triggerFunction); // attach event handlers to the dir buttons
         }
 
         // bind arrow keys 
-        $(document).keydown((e) => {
-            if (e.which === 38) 
-                this.processRotate("up");
-            else if (e.which === 39) 
-                this.processRotate("right");
-            else if (e.which === 40) 
-                this.processRotate("down");
-            else if (e.which === 37) 
-                this.processRotate("left");
+        $(document).keydown((e) => { // gosh yeah let's invert
+            if (this.isUnlocked()) {
+                if (e.which === 38) // up
+                    this.processRotate("up");
+                else if (e.which === 39) // right
+                    this.processRotate("right");
+                else if (e.which === 40) // down
+                    this.processRotate("down");
+                else if (e.which === 37) // left
+                    this.processRotate("left");
+            }
         });
 
         //$("#overScreen").one("click", () => {
@@ -38,7 +44,7 @@ export class GUI {
     }
 
     setFace(face, dir) {
-        console.log("set face: " + face);
+        //console.log("set face: " + face);
         this.currentFace = face;
         this.currentDir = dir;
     }
@@ -48,24 +54,32 @@ export class GUI {
     getDir() { return this.currentDir; }
 
     resetGame(face = "sky", dir = "up") {
+        const faces = $(".face");
+        if (faces.length > 0) {
+            faces.hide();
+            faces.remove();
+        }
         this.setFace(face, dir);
         this.buildFace(face, dir);
         this.activateFace();
     }
 
+    relock() { this.lock = true; }
+    unlock() { this.lock = false; }
+
+    isLocked() { return this.lock; }
+    isUnlocked() { return !this.lock; }
+
 
     processRotate(dir) {
+        this.relock();
         // create new face
         const transformMap = GM.transformMap;
         const oldFace = this.getFace();
         const oldDir = this.getDir();
         
-        //console.log("////////////////////////");
-        //console.log("// old face: " + oldFace + " + " + oldDir);
         let adjDir = GM.subDirs(dir, oldDir); // adjust current tilt with input direction
-        adjDir = GM.antiDir(adjDir); // the map points in the direction of the face which is opposite to the input direction whoops
         
-        //console.log("// click dir: " + dir + " -> " + adjDir);
         const [newFace, newDir] = transformMap[oldFace][adjDir];
         const newAdjDir = GM.addDirs(newDir, oldDir);
         
@@ -78,13 +92,13 @@ export class GUI {
             display = "block";
         this.board.css("display", display);
         
-        //console.log("// new face: " + newFace + " + " + newDir + " -> " + newAdjDir);
-        const prepend = dir === "down" || dir === "right";
+        const prepend = dir === "up" || dir === "left";
         this.buildFace(newFace, newAdjDir, prepend);
         
         // animate both faces
-        $("#face-" + oldFace).addClass("shrink-" + dir);
-        $("#face-" + newFace).addClass("grow-" + dir);
+        const antiDir = GM.antiDir(dir);
+        $("#face-" + oldFace).addClass("shrink-" + antiDir);
+        $("#face-" + newFace).addClass("grow-" + antiDir);
 
         const gui = this;
         
@@ -96,9 +110,9 @@ export class GUI {
             
             gui.setFace(newFace, newAdjDir);
             // remove animation from new face
-            $("#face-" + newFace).removeClass("grow-" + dir);
+            $("#face-" + newFace).removeClass("grow-" + antiDir);
             
-            if (gui.cube.currentPlayer)
+            if (gui.cube.isPlayersTurn())
                 gui.activateFace();
         });
         $("#face-" + newFace).show(); // technically this fires before the animationend
@@ -141,6 +155,7 @@ export class GUI {
     }
 
     activateFace() {
+        this.unlock();
         const faceName = this.getFace();
         const face = GM.faceIndexes(faceName);
         //console.log("activate: " + faceName);
@@ -159,6 +174,7 @@ export class GUI {
 
     deactivateFace() {
         //console.log("deactivate");
+        this.relock();
         $(".space").off();
     }
 
@@ -179,7 +195,9 @@ export class GUI {
         space.removeClass("no-mark x-mark o-mark");
         space.addClass(mark);
         container.html(value);
-        space.off("click");
+
+        if (mark !== "no-mark")
+            space.off("click");
         //console.log("updated space " + index + " to " + value);
     }
 
@@ -208,10 +226,35 @@ export class GUI {
 
 
     updateScore() {
-        const { pc, ai } = this.cube.getScore();
+        const { pc, ai } = this.cube.getCurrentScore();
         $(".pc-score-text").text(pc);
         $(".ai-score-text").text(ai);
     }
 
 
+    gameOver() {
+        this.deactivateAIScreen();
+
+        let { pc, ai } = this.cube.getCurrentScore();
+        $("#pc-game-over-score").text(pc);
+        $("#ai-game-over-score").text(ai);
+
+        let { "pc": pcTotal, "ai": aiTotal } = this.cube.getTotalScore();
+        console.log(pcTotal);
+        console.log(aiTotal);
+
+        $("#pc-total-score").text(pcTotal);
+        $("#ai-total-score").text(aiTotal);
+
+        $("#continueButton").one("click", () => {
+            //$(".face").hide();
+            //$(".face").remove();
+            this.cube.resetGame();
+            this.resetGame();
+            $("#gameOverScreen").hide();
+        });
+
+        $("#gameOverScreen").css("display", "flex");
+        $("#gameOverScreen").show();
+    }
 }

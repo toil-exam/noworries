@@ -8,7 +8,7 @@
 <table id="dirPad">
     <tr>
         <td>
-            <div class="pc-score x-color">
+            <div id="pc-score">
                 <span class="container">
                     PC<br/>
                     <span class="pc-score-text">0</span>
@@ -19,7 +19,7 @@
             <button id="upButton">&uArr;</button>
         </td>
         <td>
-            <div class="ai-score o-color">
+            <div id="ai-score">
                 <span class="container">
                     AI<br/>
                     <span class="ai-score-text">0</span>
@@ -61,6 +61,34 @@
 </div>
 
 <div id="aiScreen"><span class="dotDotDot container">.</span></div>
+
+<div id="gameOverScreen">
+    <table>
+        <tr>
+            <td colspan="3">GAME OVER</td>
+        </tr>
+        <tr>
+            <td>SCORE</td>
+            <td class="x-color">PC</td>
+            <td class="o-color">AI</td>
+        </tr>
+        <tr>
+            <td>game</td>
+            <td id="pc-game-over-score"></td>
+            <td id="ai-game-over-score"></td>
+        </tr>
+        <tr>
+            <td>total</td>
+            <td id="pc-total-score"></td>
+            <td id="ai-total-score"></td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <button id="continueButton">continue</button>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 <!-- jQueryyyy -->
