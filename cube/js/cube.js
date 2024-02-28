@@ -4,14 +4,11 @@ import { GUI } from "/cube/js/gui.js";
 import { AI } from "/cube/js/ai.js";
 
 
-// when dom is ready
-$(document).ready(function(){
-
 
 class Cube {
     constructor() {
         this.resetGame();
-        this.score = {"pc": 0, "ai": 0};
+        this.score = {"pc": 0, "ai": 0}; // cumulative score, gets added to after each game
         this.gui = new GUI(this);
         this.ai = new AI(this);
     }
@@ -34,7 +31,7 @@ class Cube {
     isPlayersTurn() { return this.currentPlayer; }
 
     processPlayerMove(index) {
-        // process player input from the gui, always from player input yeah?
+        // process player input from the gui
         if (this.isPlayersTurn() && this.getSpace(index) === " ") {
             this.gui.deactivateFace();
             this.gui.activateAIScreen();
@@ -42,7 +39,6 @@ class Cube {
             const mark = "X";
             this.setSpace(index, mark);
             this.setPlayer(false);
-            //console.log("move processed: " + mark);
             this.gui.updateSpace(index); // tell the gui to update
 
             if (!this.gameOverTest())
@@ -52,7 +48,6 @@ class Cube {
 
     triggerAI() {
         const nextPlay = this.ai.play();
-        //console.log("current face: " + this.gui.getFace());
 
         if (!GM.indexInFace(nextPlay, this.gui.getFace())) {
             // not on current face
@@ -71,9 +66,7 @@ class Cube {
             }
             if (side !== "") {
                 move = GM.addDirs(move, this.gui.getDir());
-                //move = GM.antiDir(move);
                 this.gui.processRotate(move);
-                //setTimeout(() => this.gui.processRotate(move), 500);
             } else {
                 move = GM.randomDir();
                 this.gui.processRotate(move);
@@ -81,6 +74,7 @@ class Cube {
             }
         }
 
+        // not thrilled about using setTimeout, need to change to fire off animationend
         const mark = "O";
         setTimeout(() => this.setSpace(nextPlay, mark), 750);
         this.setPlayer(true);
@@ -89,14 +83,13 @@ class Cube {
             if(!this.gameOverTest())
                 this.gui.activateFace();
             this.gui.deactivateAIScreen();
-            //console.log("current face: " + this.gui.getFace());
         }, 1000);
 
     }
 
 
     
-    getCurrentScore() {
+    getCurrentScore() { // calculate score of current game state
         const space = this.getSpaces();
         let pc = 0;
         let ai = 0;
@@ -110,7 +103,7 @@ class Cube {
         return score;
     }
 
-    getTotalScore() { return this.score; }
+    getTotalScore() { return this.score; } // cumulative score
 
 
     gameOverTest() {
@@ -124,7 +117,7 @@ class Cube {
         this.score["pc"] += pc;
         this.score["ai"] += ai;
         
-        this.gui.gameOver();
+        this.gui.gameOver(); 
         return true;
     }
 }
@@ -132,6 +125,9 @@ class Cube {
 
 
 
-const cube = new Cube();
+// when dom is ready
+$(document).ready(function(){
+
+    const cube = new Cube();
 
 });

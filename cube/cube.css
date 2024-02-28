@@ -60,6 +60,7 @@ button {
     background-color: #666;
     color: #999;
     border: var(--border-size) solid #333;
+    border-radius: var(--border-round);
 }
 
 #upButton, #downButton {width: var(--face-size); height: var(--space-size); }

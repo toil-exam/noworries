@@ -41,7 +41,7 @@ export class GM {
         let output = [];
         for (let i = 1; i < 28; i++) {
             if (i === 1)
-                output[i] = " "; // skip
+                output[i] = " "; // skip, allowing one move to win
             else if (i === 14)
                 continue;
             else
@@ -132,7 +132,6 @@ export class GM {
 
         output = Array.from(new Set(output.map(JSON.stringify)), JSON.parse); // so says this will remove duplicates 
         
-        //console.log(output);
         return output;
     };
 
@@ -176,20 +175,15 @@ export class GM {
         for (const row of GM.face(face)) {
             output.push(...row);
         }
-        //console.log("face indexes: " + face + ", output: " + output);
         return output;
     }
 
     static indexInFace(index, faceName) {
         const face = this.faceIndexes(faceName);
         if (face.includes(index)) {
-            //console.log("index: " + index + " is in face: " + faceName + " " + face);
             return true;
         }
-        //console.log("index: " + index + " is NOT in face: " + faceName + " " + face);
         return false;
     }
-
     
 }
-

@@ -9,7 +9,7 @@ export class GUI {
         this.cube = cube;
         this.board = $("#cubeBoard");
         this.dotInterval;
-        this.lock = true;
+        this.lock = true; // toggle whether or not player can input
         
         for (const dir of GM.dirNames) {
             const triggerFunction = () => { 
@@ -20,15 +20,15 @@ export class GUI {
         }
 
         // bind arrow keys 
-        $(document).keydown((e) => { // gosh yeah let's invert
+        $(document).keydown((e) => { 
             if (this.isUnlocked()) {
-                if (e.which === 38) // up
+                if (e.which === 38) 
                     this.processRotate("up");
-                else if (e.which === 39) // right
+                else if (e.which === 39) 
                     this.processRotate("right");
-                else if (e.which === 40) // down
+                else if (e.which === 40) 
                     this.processRotate("down");
-                else if (e.which === 37) // left
+                else if (e.which === 37) 
                     this.processRotate("left");
             }
         });
@@ -41,7 +41,6 @@ export class GUI {
     }
 
     setFace(face, dir) {
-        //console.log("set face: " + face);
         this.currentFace = face;
         this.currentDir = dir;
     }
@@ -98,7 +97,7 @@ export class GUI {
         $("#face-" + oldFace).addClass("shrink-" + antiDir);
         $("#face-" + newFace).addClass("grow-" + antiDir);
 
-        const gui = this;
+        const gui = this; 
         
         // callback to fire once the grow animation has finished 
         $("#face-" + newFace).one("animationend", () => {
@@ -119,7 +118,8 @@ export class GUI {
 
     buildFace(faceName, dir, prepend = false) {
         if ($("#face-" + faceName).length)
-            $("#face-" + faceName).remove();
+            $("#face-" + faceName).remove(); // help avoid accidents
+
         const face = $("<div>", { id: "face-" + faceName, class: "face" });
         if (faceName !== this.getFace())
             face.hide();
@@ -129,7 +129,7 @@ export class GUI {
         const gui = this;
                 
         for (let x = 0; x < 3; x++) {
-            const row = $("<div>", { class: "row row" + x });
+            const row = $("<div>", { class: "row row-" + x });
             face.append(row);
 
             for (let y = 0; y < 3; y++) {
@@ -144,23 +144,17 @@ export class GUI {
                 const container = $("<span>", { class: "container container-" + index});
                 space.append(container);
                 container.html(value);
-                //space.on("mouseover", overFunction);
-                row.append(space);
-        
+                row.append(space);        
             }
         }
-
     }
 
     activateFace() {
         this.unlock();
         const faceName = this.getFace();
         const face = GM.faceIndexes(faceName);
-        //console.log("activate: " + faceName);
-        //console.log(face);
         const gui = this;
         for (const index of face) {
-            //console.log("INDEX: " + index);
             if (this.cube.getSpace(index) === " ") {
                 const clickFunction = () => {
                     gui.processPlayerMove(index);
@@ -171,7 +165,6 @@ export class GUI {
     }
 
     deactivateFace() {
-        //console.log("deactivate");
         this.relock();
         $(".space").off();
     }
@@ -196,7 +189,6 @@ export class GUI {
 
         if (mark !== "no-mark")
             space.off("click");
-        //console.log("updated space " + index + " to " + value);
     }
 
     activateAIScreen() {
@@ -211,7 +203,6 @@ export class GUI {
             } else {
                 dots = ".";
             }
-            //console.log(dots);
             $(".dotDotDot").text(dots);
         }, 200);
     }
@@ -258,8 +249,6 @@ export class GUI {
         $("#ai-total-score").text(aiTotal);
 
         $("#continueButton").one("click", () => {
-            //$(".face").hide();
-            //$(".face").remove();
             this.cube.resetGame();
             this.resetGame();
             $("#gameOverScreen").hide();
