@@ -1,0 +1,82 @@
+
+
+<!DOCTYPE html>
+<head>
+    <title>E S P I O N A G E</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Micro+5&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="espionage.css"/>
+</head>
+<body>
+
+
+
+<div id="rulesScreen" class="screen">
+
+    <h1 class="m5">E S P I O N A G E</h1>
+    <h3 class="m5">- t h e  _ r u l e s -</h3>
+    
+    <ul id="theRules">
+        <li>The aim is to score 100 points</li>
+        <li>A deck of cards has four suits and there are four players</li>
+        <li><b>The Deal</b>: a standard playing card deck is used - 52 cards = 4 suit x 13 rank deck, 4 players with 13 card hands, for 13 rounds of 4 cards where each player plays 1</li>
+        <li>The four Aces are removed from the deck and shuffled separately, each player is dealt one Ace to determine the teams for the hand, each hand each player will have one teammate and two enemies</li>
+        <li>The Teams are Red vs Black: Spades and Clubs against Hearts and Diamonds</li>
+        <li>Each hand consist of 13 rounds, one for each card in your hand</li>
+        <li>The player to the left of the dealer starts each hand, the winner of each hand deals the next hand</li>
+        <li>The opening card of each round determines the suit of that round, each player in turn to the left</li>
+        <li>The winner of each round is the player who played the highest rank out of cards matching the opening card's suit</li>
+        <li>Ex = 2 Spades -> J Hearts -> K Diamonds -> 10 Spades = the 10 of Spades would win as the the opening card was a Spade</li>
+        <li>The winner of each round takes the cards from the round into their winnings</li>
+        <li>The winner of each round plays the opening card to the next round</li>
+        <li><b>Exception</b>: a player should not lose their ace as it's a high card, but as it represents a player's team a player <b>cannot</b> lose their ace</li>
+        <li>The hand ends once everyone's hands are empty, 13 rounds</li>
+        <li><b>Scoring</b>: Every card is worth a point, but only if it was won by the person dealt the Ace of that suit</li>
+        <li>The two teams, Red and Black, add up the scores of their two players; Spades with Clubs, Hearts with Diamonds</li>
+        <li>The team with the higher scores earns the total score of their team, the losing team scores the scores of the individual players</li>
+        <li>If the two teams tie all four players score the full total of the table</li>
+        <li>The game ends when a player hits 100 points, the player with the highest score wins</li>
+    </ul>
+
+</div>
+
+
+
+<div id="gameScreen" class="screen">
+    
+    <div id="southArea"></div>
+    <div id="westArea"></div>
+    <div id="northArea"></div>
+    <div id="eastArea"></div>
+    
+    <div id="southPlay"></div>
+    <div id="westPlay"></div>
+    <div id="northPlay"></div>
+    <div id="eastPlay"></div>
+
+</div>
+
+
+<div id="pauseScreen" class="screen">
+    <h1 class="m5">E S P I O N A G E</h1>
+    <h3 class="m5">- p a u s e d -</h3>
+</div>
+
+
+<div id="gameOverScreen" class="screen">
+    <h1 class="m5">E S P I O N A G E</h1>
+    <h3 class="m5">- g a m e _ o v e r -</h3>
+</div>
+
+
+<div id="scoreCardScreen" class="screen">
+
+</div>
+
+
+</body>
+
+</html>
