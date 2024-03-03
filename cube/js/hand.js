@@ -48,11 +48,11 @@ export class HAND {
         const dy = Math.abs(this.startxy.y - this.endxy.y);
         const dxy = Math.abs(dx - dy);
 
-        const ratioTest = dx > dy ? Boolean( dx > 2*dy ) :
-            dx < dy ? Boolean( 2*dx < dy ) :
+        const ratioTest = dx > dy ? new Boolean( dx > 2*dy ) :
+            dx < dy ? new Boolean( 2*dx < dy ) :
             false;
 
-        const test = Boolean(dxy > this.minumum && ratioTest);
+        const test = new Boolean(dxy > this.minumum && ratioTest);
 
         if (test)
             this.emit();
