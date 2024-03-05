@@ -1,14 +1,14 @@
 
 
 import { GM } from "/cube/js/gm.js";
-import { HAND } from "/cube/js/hand.js";
+//import { HAND } from "/cube/js/hand.js";
 
 
 export class GUI {
     constructor(cube) {
         this.cube = cube;
         this.board = $("#cubeBoard");
-        this.hand = new HAND(this);
+        //this.hand = new HAND(this);
         this.dotInterval;
         this.lock = true; // toggle whether or not player can input
         
