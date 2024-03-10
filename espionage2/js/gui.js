@@ -1,4 +1,5 @@
 
+import { GM } from "/espionage2/js/gm.js";
 
 
 
@@ -8,34 +9,38 @@ export class GUI {
         this.game = game;
         this.gameScreen = $("#gameScreen");
 
-        for (player in GM.player) {
-            let area = $("<div>", {id: player.lower() + "Area"});
-            area.html(player);
-            this.gameScreen.append(area);
+        for (let player of GM.players) {
+            let area = $("#" + player.toLowerCase() + "Area");
+            area.html(player + " Area");
 
-            let play = $("<div>", {id: player.lower() + "Play"});
-            this.gameScreen.append(play);
+            let play = $("#" + player.toLowerCase() + "Play");
+            play.html(player + "Play");
         }
     }
 
     toggleScreen(input = null) {
-
-        for (screen of GM.screens) {
+        console.log("T O G G L E _ S C R E E N : " + input)
+        for (let screen of GM.screens) {
             $("#" + screen + "Screen").hide();
         }
     
         if (input) {
             let screen = $("#" + input + "Screen");
             screen.show();
-            if (input !== "game") {
+            if (input === "rules") {
                 screen.one("click", () => {
-                    screen.toggleScreen("game");
+                    this.toggleScreen("game");
+                });
+            } else if (input === "game") {
+                $("#rulesToggle").one("click", () => {
+                    this.toggleScreen("rules");
                 });
             }
         }
+    }
 
-        
-    
+    activatePlayerHand() {
+
     }
 
     

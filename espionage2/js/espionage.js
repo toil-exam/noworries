@@ -1,10 +1,10 @@
 
 
-
+import { GM } from "/espionage2/js/gm.js";
 import { GUI } from "/espionage2/js/gui.js";
 import { AI } from "/espionage2/js/ai.js";
-import { ScoreCard } from "/espionage2/js/scoreCard.js";
-import { Card } from "/espionage2/js/Card.js";
+import { ScoreCard } from "/espionage2/js/score.js";
+import { Card } from "/espionage2/js/card.js";
 
 
 
@@ -12,6 +12,7 @@ import { Card } from "/espionage2/js/Card.js";
 
 class Espionage {
 	constructor() {
+		console.log("E S P I O N A G E")
 
 		this.gui = new GUI(this);
 		this.ai = new AI(this);
@@ -42,49 +43,79 @@ class Espionage {
 
 
 
-	reset(input = "game") {
+	reset(input = "rules") {
+		console.log("R E S E T : " + input);
 		this.score = new ScoreCard();
 		this.deal();
 		if (input)
 			this.gui.toggleScreen(input);
-		for (r = 0; r < 13; r++) {
+		for (let r = 0; r < 13; r++) {
 			this.playRound();
 		}
 	}
 
 
 	deal() {
+		console.log("D E A L");
 		// aces first
 		let aces = [];
-		for (a = 0; a < 4; a++) {
+		for (let a of GM.aces) {
 			aces.push(new Card(a));
 		}
+		//console.log(aces);
 		aces = GM.shuffle(aces);
-		for (a = 0; a < 4; a++) {
+		//console.log(aces);
+		for (let a = 0; a < 4; a++) {
 			let ace = aces.pop();
-			this.player[a].play.push(ace);
-			this.player[a].team = GM.teams[ace.getSuit()]; // since aces are 0-3 and so are suits
+			//console.log(ace);
+			let suit = ace.getSuit();
+			this.player[a].hand.push(ace);
+			this.player[a].team = GM.teams[suit]; // since aces are 0-3 and so are suits
 		}
 		// everything else
 		let deck = [];
-		for (c = 4; c < 52; c++) {
+		for (let c of GM.nonAces) {
 			deck.push(new Card(c));
 		}
 		deck = GM.shuffle(deck);
-		for (c = 4; c < 52; c++) {
+		for (let c = 4; c < 52; c++) {
 			let card = deck.pop();
 			let p = c % 4;
-			this.player[p].play.push(card);
+			//console.log(p + " : " + this.player[p]);
+			this.player[p].hand.push(card);
 		}
 	}
 
-	playRound() {
-		for (p = 0; p < 4; p++) {
 
+
+	playRound() {
+		console.log("P L A Y _ R O U N D");
+		let round = [];
+		let lead = this.currentPlayer;
+		for (let p = 0; p < 4; p++) {
+			if (p === 0) {
+				this.gui.activatePlayerHand();
+			} else {
+				let player = this.currentPlayer;
+				let currentLeadPlay = GM.compare(...round);
+				let play = this.ai.play(currentLeadPlay, this.player[player].hand);
+				let index = this.player[player].hand.indexOf(play);
+				
+				this.player[player].play = play;
+				let temp = []
+
+				for (let card of this.player[player].hand) {
+					if (index !== this.player[player].hand.indexOf(card))
+						temp.push(card);
+				}
+			}
+
+			this.iteratePlayer();
 		}
 	}
 
 	iteratePlayer() {
+		console.log("I T E R A T E _ P L A Y E R")
 		this.currentPlayer++;
 		if (this.currentPlayer > 3)
 			this.currentPlayer -= 4;

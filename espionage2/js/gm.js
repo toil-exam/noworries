@@ -21,8 +21,8 @@ export class GM {
 
 
 
-    static aces = [0, 1, 2, 3];
-    static nonAces = [...Array(48).keys().map((key) => {return key + 4})];
+    static aces = [48, 49, 50, 51];
+    static nonAces = [...Array(48).keys()];
     static deck = [...Array(52).keys()]
 
     
@@ -32,15 +32,48 @@ export class GM {
     }
 
     static shuffle(arr) {
-        let output = [...arr];
+
+        return arr.sort(() => Math.random() - 0.5);
+
+        /*
+        let output = arr.slice();
         let temp;
         let r;
-        for (i = 0;  i < arr.length; i++) {
-            r = Math.random * arr.length;
+        for (let i = 0, length = arr.length;  i < length; i++) {
+            r = Math.random * length;
             temp = output[i];
             output[i] = output[r];
             output[r] = temp;
         }
+        return output;
+        */
+    }
+
+
+
+    static compare(...cards) {
+        console.log("C O M P A R E");
+        console.log(cards);
+        let output = null;
+
+        let rank = null;
+        let suit = null;
+
+
+        for (let card of cards) {
+            if (!rank) {
+                rank = card.getRank();
+                suit = card.getSuit();
+                output = card;
+            } else {
+                if (rank < card.getRank() && suit === card.getSuit()) {
+                    rank = card.getRank();
+                    output = card;
+                }
+            }
+        }
+
+        console.log(output);
         return output;
     }
 

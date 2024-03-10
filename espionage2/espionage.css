@@ -3,10 +3,20 @@
 
 
 @media screen and (orientation:portrait) {
-    :root{ --unit: calc(100vw / 12); }
+    :root{ 
+        --unit: calc(100vw / 12); 
+
+        --rules-width: 90vw;
+        --rules-left: 5vw;
+    }
 }
 @media screen and (orientation:landscape) {
-    :root{ --unit: calc(100vh / 12); }
+    :root{ 
+        --unit: calc(100vh / 12); 
+
+        --rules-width: 50vw;
+        --rules-left: 25vw;
+    }
 }
 
 
@@ -14,16 +24,18 @@
 :root{
 
 
+    --eigth-unit: calc(var(--unit) / 8);
+    --quarter-unit: calc(var(--unit) / 4);
+    --third-unit: calc(var(--unit) / 3);
+    --half-unit: calc(var(--unit) / 2);
+    --double-unit: calc(var(--unit) * 2);
+    --triple-unit: calc(var(--unit) * 3);
+    --quad-unit: calc(var(--unit) * 4);
+    --oct-unit: calc(var(--unit) * 8);
 
-    --eigth-unit: caclc(unit / 8);
-    --quarter-unit: caclc(unit / 4);
-    --third-unit: caclc(unit / 3);
-    --half-unit: caclc(unit / 2);
-    --double-unit: calc(unit * 2);
-    --triple-unit: calc(unit * 3);
-    --quad-unit: calc(unit * 4);
-    --oct-unit: calc(unit * 8);
 
+
+    --light-text-color: #e5e6e3;
 
 }
 
@@ -33,7 +45,7 @@
 
 body {
     background-color: #49785d;
-    color: #e5e6e3;
+    color: var(--light-text-color);
     display: flex;
     justify-content: center;
     text-align: center;
@@ -41,7 +53,15 @@ body {
 }
 
 
+h1, h3 { transform: scale(2); }
 
+.m5 {
+
+    font-family: "Micro 5", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  
+}
 
 .screen {
 
@@ -54,14 +74,81 @@ body {
 
 }
 
+#rulesScreen { height: auto; }
 
 
 
-
-.m5 {
-
-    font-family: "Micro 5", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-  
+#theRules {
+    position: relative;
+    width: var(--rules-width);
+    left: var(--rules-left);
 }
+
+#theRules::after {
+    content: "";
+    display: block;
+    height: var(--double-unit);
+}
+
+#theRules > div:not(:last-child)::after {
+    content: "\2660 \2665 \2663 \2666";
+    position: relative;
+    display: block;
+    left: 30%;
+    right: 0;
+    width: 40%;
+    opacity: 0.2;
+    border-top: 2px solid var(--light-text-color);
+    margin: 10px 0 5px 0;
+    padding-top: 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+#gameScreen > * {position: absolute; border: 1px solid white; padding: 5px; }
+
+#southArea {top: 80vh; left: 10vw; width: 80vw; }
+#westArea {top: 15vh; left: 10vw; width: 20vw; }
+#northArea {top: 5vh; left: 40vw; width: 20vw; }
+#eastArea {top: 15vh; left: 70vw; width: 20vw; }
+
+
+#southPlay {top: 60vh; left: 45vw; width: 10vw; }
+#westPlay {top: 40vh; left: 30vw; width: 10vw; }
+#northPlay {top: 20vh; left: 45vw; width: 10vw; }
+#eastPlay {top: 40vh; left: 60vw; width: 10vw; }
+
+@keyframes southPlay-animate {
+    0% {top: 80vh; }
+    100% {top: 60vh; }
+}
+
+@keyframes westPlay-animate {
+    0% {left: 10vw; }
+    100% {top: 30vw; }
+}
+
+@keyframes northPlay-animate {
+    0% {top: 5vh; }
+    100% {top: 20vh; }
+}
+
+@keyframes eastPlay-animate {
+    0% {top: 80vw; }
+    100% {top: 60vw; }
+}
+
+
+#rulesToggle {top: 70vh; left: 80vw; width: 10vw; }
+
+
+
+
