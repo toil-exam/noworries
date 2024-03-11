@@ -40,7 +40,7 @@ export class GUI {
     }
 
     activatePlayerHand() {
-
+        console.log("U S E R _ T U R N");
     }
 
     

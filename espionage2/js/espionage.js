@@ -19,7 +19,7 @@ class Espionage {
 		this.score = null;
 
 		this.leader = 0;
-		this.currentPlayer = 0;
+		this.currentPlayer = 0; // 0 is user
 		
 		this.player = [];
 
@@ -49,9 +49,13 @@ class Espionage {
 		this.deal();
 		if (input)
 			this.gui.toggleScreen(input);
+
+		this.passTurn();
+		/*
 		for (let r = 0; r < 13; r++) {
 			this.playRound();
 		}
+		*/
 	}
 
 
@@ -84,10 +88,80 @@ class Espionage {
 			//console.log(p + " : " + this.player[p]);
 			this.player[p].hand.push(card);
 		}
+
+		for (let p = 0; p < 4; p++) { // sort hands ?? 
+			this.player[p].hand = this.player[p].hand.sort(({x:a}, {x:b}) => a - b);
+		}
+
+		console.log(this.player);
 	}
 
 
+	passTurn() {
+		console.log("P A S S _ T U R N")
+		this.iteratePlayer();
 
+		if (this.currentPlayer > 0)
+			this.playAI();
+		else if (this.currentPlayer === 0)
+			this.gui.activatePlayerHand();	
+	}
+
+	playAI() {
+		console.log("P L A Y _ A I");
+		let round = [];
+		let p = this.currentPlayer;
+		let card = null;
+
+		for (let x = 4; x > 0; x--) { // construct the round by working backwards from current player
+			p--;
+			if (p < 0)
+				p += 4;
+			card = this.player[p].play; 
+			if (card)
+				round.unshift(card); // beginning of array
+			else // null ie empty
+				break;
+		}
+
+		card = null;
+
+		console.log(round);
+
+		p = this.currentPlayer; 
+
+		let currentBestCard = GM.compare(...round);
+		card = this.ai.play(currentBestCard, this.player[p].hand);
+
+		this.playCard(p, card);
+
+		this.passTurn();
+	}
+
+	playUser(card) {
+		console.log("U S E R _ T U R N")
+		// ????
+	}
+
+	playCard(p, card) {
+		if (!card)
+			return;
+		console.log("P L A Y _ C A R D : " + card.x);
+		this.player[p].play = card; // put it in the play zone
+		let i = this.player[p].hand.length;
+		
+		while(i--) {
+			if (this.player[p].hand[i].hasOwnProperty("x") && this.player[p].hand[i].x === card.x) {
+				this.player[p].hand.splice(i,1); // remove it from the hand zone
+				break;
+			}
+		}
+	}
+
+
+	// change ??
+	/////////////////////////////////////////////////////////
+	/*
 	playRound() {
 		console.log("P L A Y _ R O U N D");
 		let round = [];
@@ -113,6 +187,9 @@ class Espionage {
 			this.iteratePlayer();
 		}
 	}
+	*/
+	///////////////////////////////////////////////////////////
+
 
 	iteratePlayer() {
 		console.log("I T E R A T E _ P L A Y E R")
