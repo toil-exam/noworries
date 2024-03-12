@@ -52,8 +52,8 @@ export class GM {
 
 
     static compare(...cards) {
-        console.log("C O M P A R E");
-        console.log(cards);
+        //console.log("C O M P A R E");
+        //console.log(cards);
         let output = null;
 
         let rank = null;
@@ -61,20 +61,48 @@ export class GM {
 
 
         for (let card of cards) {
-            if (!rank) {
-                rank = card.getRank();
-                suit = card.getSuit();
+            if (!output) {
+                rank = card.rank;
+                suit = card.suit;
                 output = card;
             } else {
-                if (rank < card.getRank() && suit === card.getSuit()) {
-                    rank = card.getRank();
+                if (rank < card.rank && suit === card.suit) {
+                    rank = card.rank;
                     output = card;
                 }
             }
         }
 
-        console.log(output);
+        //console.log(output);
         return output;
     }
 
+
+    static lowest(...cards) {
+        console.log("L O W E S T");
+        //console.log(...cards);
+        let arr = [];
+        let output = null;
+
+        for (let card of cards) {
+            if (arr.length === 0) {
+                arr.push(card); // empty arrs? just throw in
+            } else {
+                if (card.rank === arr[0].rank) { // same rank as current arrs? just throw in
+                    arr.push(card);
+                } else if (card.rank < arr[0].rank) { // lower rank than current? new array with just this card
+                    arr = [card];
+                }
+            }
+        }
+
+        if (arr.length > 1) {
+            let r = Math.floor(Math.random * arr.length);
+            output = arr[r];
+        } else if (arr.length === 1) {
+            output = arr[0];
+        }
+
+        return output;
+    }
 }

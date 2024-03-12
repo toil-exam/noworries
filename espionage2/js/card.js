@@ -7,14 +7,20 @@ export class Card {
 
     constructor(x) {
         this.x = x;
-        //console.log(x + " : " + this.rankOfSuits());
-    }
 
-    getRank() { return Math.floor(this.x / 4); }
-    getSuit() { return this.x % 4; }
+        this.rank = Math.floor(this.x / 4);
+        this.suit = this.x % 4;
 
-    rankOfSuits() {
-        return GM.ranks[this.getRank()] + " of " + GM.suits[this.getSuit()];
+        this.color = this.suit % 2 === 0 ? "black" : "red";
+        
+        this.Rank = GM.ranks[this.rank];
+        this.r = GM.rs[this.rank];
+
+        this.Suit = GM.suits[this.suit];
+        this.s = GM.ss[this.suit];
+
+        this.RankOfSuit = this.Rank + " of " + this.Suit;
+        this.rs = this.r + this.s;
     }
 
 }

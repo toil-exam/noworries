@@ -63,18 +63,23 @@ class Espionage {
 		console.log("D E A L");
 		// aces first
 		let aces = [];
+		let card;
 		for (let a of GM.aces) {
-			aces.push(new Card(a));
+			//console.log(a);
+			card = new Card(a);
+			//console.log(card);
+			aces.push(card);
+			//console.log(...aces);
 		}
-		//console.log(aces);
+		//console.log(...aces);
 		aces = GM.shuffle(aces);
-		//console.log(aces);
+		//console.log(...aces);
 		for (let a = 0; a < 4; a++) {
-			let ace = aces.pop();
+			card = aces.pop();
 			//console.log(ace);
-			let suit = ace.getSuit();
-			this.player[a].hand.push(ace);
-			this.player[a].team = GM.teams[suit]; // since aces are 0-3 and so are suits
+			//let suit = card.suit;
+			this.player[a].hand.push(card);
+			this.player[a].team = card.color; 
 		}
 		// everything else
 		let deck = [];
@@ -93,13 +98,16 @@ class Espionage {
 			this.player[p].hand = this.player[p].hand.sort(({x:a}, {x:b}) => a - b);
 		}
 
-		console.log(this.player);
+		this.check();
+		this.gui.updateHand();
 	}
 
 
 	passTurn() {
-		console.log("P A S S _ T U R N")
+		let from = this.currentPlayer;
 		this.iteratePlayer();
+		let to = this.currentPlayer;
+		console.log("P A S S _ T U R N : " + from + " -> " + to);
 
 		if (this.currentPlayer > 0)
 			this.playAI();
@@ -108,9 +116,10 @@ class Espionage {
 	}
 
 	playAI() {
-		console.log("P L A Y _ A I");
-		let round = [];
 		let p = this.currentPlayer;
+		console.log("P L A Y _ A I : " + p + " ( " + GM.players[p] + " )");
+		this.check();
+		let round = [];
 		let card = null;
 
 		for (let x = 4; x > 0; x--) { // construct the round by working backwards from current player
@@ -135,24 +144,32 @@ class Espionage {
 
 		this.playCard(p, card);
 
+		this.check();
+
 		this.passTurn();
 	}
 
 	playUser(card) {
-		console.log("U S E R _ T U R N")
+		console.log("U S E R _ P L A Y")
 		// ????
+		this.gui.deactivatePlayerHand();
+		this.playCard(0, card);
+		this.gui.updateHand();
+		this.check();
+		this.passTurn();
 	}
 
 	playCard(p, card) {
 		if (!card)
 			return;
-		console.log("P L A Y _ C A R D : " + card.x);
+		console.log("P L A Y _ C A R D : " + card.x + " ( " + card.RankOfSuit + " )");
 		this.player[p].play = card; // put it in the play zone
 		let i = this.player[p].hand.length;
 		
 		while(i--) {
 			if (this.player[p].hand[i].hasOwnProperty("x") && this.player[p].hand[i].x === card.x) {
 				this.player[p].hand.splice(i,1); // remove it from the hand zone
+				this.gui.animatePlay(p, card);
 				break;
 			}
 		}
@@ -192,10 +209,19 @@ class Espionage {
 
 
 	iteratePlayer() {
-		console.log("I T E R A T E _ P L A Y E R")
+		let from = this.currentPlayer;
+		
 		this.currentPlayer++;
 		if (this.currentPlayer > 3)
 			this.currentPlayer -= 4;
+
+		let to = this.currentPlayer;
+		
+		console.log("I T E R A T E _ P L A Y E R : " + from + " -> " + to);
+	}
+
+	check() {
+		console.log(this.player);
 	}
 
 }
