@@ -118,7 +118,9 @@ h1, h3 { transform: scale(2); }
 
 #gameScreen > * {position: absolute; border: 1px solid var(--light-text-color); padding: 5px; }
 
-#southArea {top: 80vh; left: 10vw; width: 80vw; }
+#hand {top: 80vh; left: 10vw; width: 80vw; }
+
+#southArea {top: 70vh; left: 10vw; width: 20vw; }
 #westArea {top: 15vh; left: 10vw; width: 20vw; }
 #northArea {top: 5vh; left: 40vw; width: 20vw; }
 #eastArea {top: 15vh; left: 70vw; width: 20vw; }

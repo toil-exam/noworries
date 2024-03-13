@@ -106,6 +106,7 @@ class Espionage {
 
 		this.check();
 		this.gui.updateHand();
+		this.gui.updateScore();
 	}
 
 
@@ -208,7 +209,7 @@ class Espionage {
 			}
 		}
 
-		if (winner) {
+		if (winner !== null) {
 			for (let p = 0; p < 4; p++) {
 				let card = this.player[p].play;
 				this.player[winner].take.push(card);
@@ -221,6 +222,7 @@ class Espionage {
 		this.currentPlayer = winner;
 		
 		this.gui.clearTable();
+		this.gui.updateScore();
 	}
 
 

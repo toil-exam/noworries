@@ -52,7 +52,7 @@ export class GUI {
 
     updateHand() {
         let hand = this.game.player[0].hand;
-        let area = $("#southArea");
+        let area = $("#hand");
         area.html("");
         
         for (let card of hand) {
@@ -62,10 +62,10 @@ export class GUI {
         }
     }
 
-    updateNPC() {
-        for (let p = 1; p < 4; p++) {
+    updateScore() {
+        for (let p = 0; p < 4; p++) {
             let player = GM.players[p];
-            let count = this.player[p].take.length;
+            let count = this.game.player[p].take.length;
             $("#" + player.toLowerCase() + "Take").html(count);
         }
     }
