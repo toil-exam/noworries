@@ -18,6 +18,7 @@ export class Card {
 
         this.Suit = GM.suits[this.suit];
         this.s = GM.ss[this.suit];
+        this.symbol = GM.suitChars[this.suit];
 
         this.RankOfSuit = this.Rank + " of " + this.Suit;
         this.rs = this.r + this.s;

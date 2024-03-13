@@ -8,6 +8,9 @@
 
         --rules-width: 90vw;
         --rules-left: 5vw;
+
+        --card-width: 5vw;
+        --card-height: calc(var(--card-width) * 7 / 4);
     }
 }
 @media screen and (orientation:landscape) {
@@ -16,6 +19,9 @@
 
         --rules-width: 50vw;
         --rules-left: 25vw;
+
+        --card-height: 10vh;
+        --card-width: calc(var(--card-height) * 5 / 7);
     }
 }
 
@@ -36,9 +42,12 @@
 
 
     --light-text-color: #e5e6e3;
+    
+    --black-color: #353633;
+    --red-color: #e63633;
 
 
-    --standard-animation: 0.5s linear 0s 1 normal;
+    --standard-animation: 0.6s linear 0s 1 normal;
 
 }
 
@@ -52,6 +61,7 @@ body {
     display: flex;
     justify-content: center;
     text-align: center;
+    font-size: var(--quarter-unit);
     font-family: sans-serif;
 }
 
@@ -59,12 +69,12 @@ body {
 h1, h3 { transform: scale(2); }
 
 .m5 {
-
     font-family: "Micro 5", sans-serif;
     font-weight: 400;
     font-style: normal;
-  
 }
+
+.lg { font-size: 200%; }
 
 .screen {
 
@@ -116,7 +126,7 @@ h1, h3 { transform: scale(2); }
 
 
 
-#gameScreen > * {position: absolute; border: 1px solid var(--light-text-color); padding: 5px; }
+#gameScreen > * {position: absolute; }
 
 #hand {top: 80vh; left: 10vw; width: 80vw; }
 
@@ -125,54 +135,86 @@ h1, h3 { transform: scale(2); }
 #northArea {top: 5vh; left: 40vw; width: 20vw; }
 #eastArea {top: 15vh; left: 70vw; width: 20vw; }
 
+#yourTurn {top: 50vh; left: 40vw; width: 20vw;}
+
+#southArea, #westArea, #northArea, #eastArea, #rulesToggle, #hand {
+    border: 1px solid var(--light-text-color); 
+    padding: 5px; 
+}
+
 
 #southPlay {top: 60vh; left: 45vw; width: 10vw; }
 #westPlay {top: 40vh; left: 30vw; width: 10vw; }
 #northPlay {top: 20vh; left: 45vw; width: 10vw; }
 #eastPlay {top: 40vh; left: 60vw; width: 10vw; }
 
+#southPlay, #westPlay, #northPlay, #eastPlay {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
 .southPlay-animate {animation: southPlay-animate var(--standard-animation);}
 @keyframes southPlay-animate {
-    0% {top: 80vh; }
-    100% {top: 60vh; }
+    0% {top: 80vh; transform: rotate(0deg); }
+    30% {top: 70vh; transform: rotate(720deg); }
+    100% {top: 60vh; transform: rotate(720deg); }
 }
 
 .westPlay-animate {animation: westPlay-animate var(--standard-animation);}
 @keyframes westPlay-animate {
-    0% {left: 10vw; }
-    100% {left: 30vw; }
+    0% {left: 10vw; transform: rotate(180deg); }
+    30% {left: 20vw; transform: rotate(360deg); }
+    100% {left: 30vw; transform: rotate(360deg); }
 }
 
 .northPlay-animate {animation: northPlay-animate var(--standard-animation);}
 @keyframes northPlay-animate {
-    0% {top: 5vh; }
-    100% {top: 20vh; }
+    0% {top: 0vh; transform: rotate(180deg); }
+    30% {top: 10vh; transform: rotate(360deg); }
+    100% {top: 20vh; transform: rotate(360deg); }
 }
 
 .eastPlay-animate {animation: eastPlay-animate var(--standard-animation);}
 @keyframes eastPlay-animate {
-    0% {left: 80vw; }
-    100% {left: 60vw; }
+    0% {left: 80vw; transform: rotate(180deg); }
+    30% {left: 70vw; transform: rotate(360deg); }
+    100% {left: 60vw; transform: rotate(360deg); }
 }
+
 
 
 #rulesToggle {top: 70vh; left: 80vw; width: 10vw; }
 
 
+#hand {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
 
 .card {
+    width: var(--card-width);
+    height: var(--card-height);
     padding: 5px;
-    border: 1px solid;
+    border: 5px solid;
     margin-left: 5px;
     background-color: var(--light-text-color);
+    display: block;
 }
 
 .black-card {
-    border-color: black;
-    color: black;
+    border-color: var(--black-color);
+    color: var(--black-color);
 }
+.black-color { color: var(--black-color); }
 
 .red-card {
-    border-color: red;
-    color: red;
+    border-color: var(--red-color);
+    color: var(--red-color);
 }
+.red-color { color: var(--red-color); }
+
+
+.light-background { background-color: var(--light-text-color); }
+.light-color { color: var(--light-text-color); }

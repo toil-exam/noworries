@@ -10,6 +10,7 @@ export class GUI {
         this.gameScreen = $("#gameScreen");
 
         this.toggleScreen("rules");
+        $("#yourTurn").hide();
 
         /*
         for (let player of GM.players) {
@@ -46,7 +47,7 @@ export class GUI {
 
     cardSpan(card) {
         let output = $("<span>", {id: "card-" + card.x, class: "card " + card.color + "-card"});
-        output.html(card.rs);
+        output.html("<b>" + card.r + "</b><br/><span class=\"lg\">" + card.symbol + "</span>");
         return output;
     }
 
@@ -64,14 +65,48 @@ export class GUI {
 
     updateScore() {
         for (let p = 0; p < 4; p++) {
+            let test = false;
+            let suit = null;
+            let color = null;
+            for (let card of this.game.player[p].take) {
+                if (card.rank === 12) {
+                    test = true;
+                    suit = card.symbol;
+                    color = card.color;
+                }
+            }
+
             let player = GM.players[p];
-            let count = this.game.player[p].take.length;
-            $("#" + player.toLowerCase() + "Take").html(count);
+            let mark = null;
+            let count = 0;
+            let text = "";
+            if (test) {
+                for (let card of this.game.player[p].take) {
+                    if (card.symbol === suit)
+                        count++;
+                }
+                mark = suit;
+                text = "<span class=\"\">" + suit + "</span>: " + count;
+            } else {
+                count = Math.floor(this.game.player[p].take.length / 4);
+                mark = "?";
+                while (count > 0) {
+                    text += mark;
+                    count--;
+                }
+            }
+            $("#" + player.toLowerCase() + "Take").html(text);
+            if (color) {
+                $("#" + player.toLowerCase() + "Area").addClass(color + "-color");
+                $("#" + player.toLowerCase() + "Area").addClass("light-background");
+            }
         }
     }
 
     activatePlayerHand() {
         console.log("U S E R _ T U R N");
+
+        $("#yourTurn").show();
 
         let hand = this.game.player[0].hand;
         for (let card of hand) {
@@ -85,6 +120,7 @@ export class GUI {
 
     deactivatePlayerHand() {
         console.log("D E A C T I V A T E _ P L A Y E R _ H A N D");
+        $("#yourTurn").hide();
         $(".card").off("click");
         //this.updateHand();
     }

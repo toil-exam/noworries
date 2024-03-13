@@ -212,7 +212,13 @@ class Espionage {
 		if (winner !== null) {
 			for (let p = 0; p < 4; p++) {
 				let card = this.player[p].play;
-				this.player[winner].take.push(card);
+
+				if (card.rank === 12) { // you can't lose your ace 
+					this.player[p].take.push(card);
+				} else {
+					this.player[winner].take.push(card);
+				}
+
 				this.player[p].play = null;
 			}
 		} else {
