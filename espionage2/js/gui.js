@@ -7,20 +7,9 @@ export class GUI {
 
     constructor(game) {
         this.game = game;
-        this.gameScreen = $("#gameScreen");
 
-        this.toggleScreen("rules");
         $("#yourTurn").hide();
-
-        /*
-        for (let player of GM.players) {
-            let area = $("#" + player.toLowerCase() + "Area");
-            area.html(player + " Area");
-
-            let play = $("#" + player.toLowerCase() + "Play");
-            play.html(player + "Play");
-        }
-        */
+        this.toggleScreen("rules");
     }
 
     toggleScreen(input = null) {
@@ -46,8 +35,8 @@ export class GUI {
     }
 
     cardSpan(card) {
-        let output = $("<span>", {id: "card-" + card.x, class: "card " + card.color + "-card"});
-        output.html("<b>" + card.r + "</b><br/><span class=\"lg\">" + card.symbol + "</span>");
+        let output = $("<span>", {id: "card-" + card.x, class: "card " + card.color + "-card light-background"});
+        output.html("<b>" + card.r + "</b><br/><span class=\"lg\">" + card.S + "</span>");
         return output;
     }
 
@@ -60,6 +49,9 @@ export class GUI {
             //let temp = $("<span>", {id: "card-" + card.x, class: "card " + card.color + "-card"});
             //temp.html(card.rs);
             area.append(this.cardSpan(card));
+
+            $("#card-" + card.x).removeClass("light-background");
+            $("#card-" + card.x).addClass("gray-background");
         }
     }
 
@@ -71,7 +63,7 @@ export class GUI {
             for (let card of this.game.player[p].take) {
                 if (card.rank === 12) {
                     test = true;
-                    suit = card.symbol;
+                    suit = card.S;
                     color = card.color;
                 }
             }
@@ -82,7 +74,7 @@ export class GUI {
             let text = "";
             if (test) {
                 for (let card of this.game.player[p].take) {
-                    if (card.symbol === suit)
+                    if (card.S === suit)
                         count++;
                 }
                 mark = suit;
@@ -97,7 +89,9 @@ export class GUI {
             }
             $("#" + player.toLowerCase() + "Take").html(text);
             if (color) {
+                $("#" + player.toLowerCase() + "Area").removeClass("light-border");
                 $("#" + player.toLowerCase() + "Area").addClass(color + "-color");
+                $("#" + player.toLowerCase() + "Area").addClass(color + "-border");
                 $("#" + player.toLowerCase() + "Area").addClass("light-background");
             }
         }
@@ -108,9 +102,19 @@ export class GUI {
 
         $("#yourTurn").show();
 
+        let round = this.game.currentRound();
+        let currentWinner = GM.compare(...round);
+
         let hand = this.game.player[0].hand;
+        let test = round.length === 0;
         for (let card of hand) {
-            console.log("A C T I V A T E : " + card.RankOfSuit);
+            //console.log("A C T I V A T E : " + card.RankOfSuit);
+
+            if (test ||  GM.compare(currentWinner, card).x === card.x) {
+                $("#card-" + card.x).removeClass("gray-background");
+                $("#card-" + card.x).addClass("light-background");
+            }
+
             //let func = () => {this.game.playUser(card)};
             $("#card-" + card.x).one("click", () => {
                 this.game.playUser(card);
@@ -120,6 +124,11 @@ export class GUI {
 
     deactivatePlayerHand() {
         console.log("D E A C T I V A T E _ P L A Y E R _ H A N D");
+
+        for (let card of this.game.player[0].hand) {
+            $("#card-" + card.x).removeClass("light-background");
+            $("#card-" + card.x).addClass("gray-background");
+        }
         $("#yourTurn").hide();
         $(".card").off("click");
         //this.updateHand();
@@ -137,12 +146,31 @@ export class GUI {
         area.html(this.cardSpan(card));
         area.removeClass(animation);
         area.show();
+
+        let round = this.game.currentRound();
+        round.push(this.game.player[p].play); // tag on new play
+        let currentWinner = GM.compare(...round);
+        for (let card of round) {
+            if (card.x !== currentWinner.x) {
+                $("#card-" + card.x).removeClass("light-background");
+                $("#card-" + card.x).addClass("gray-background");
+            }
+        }
+
+        for (let card of this.game.player[0].hand) {
+            if (GM.compare(currentWinner, card).x !== card.x) {
+                $("#card-" + card.x).removeClass("light-background");
+                $("#card-" + card.x).addClass("gray-background");
+            }
+        }
         
 
         area.off("animationend");
         area.one("animationend", () => {
             area.removeClass(animation);
-            this.game.passTurn();
+
+            setTimeout(() => { this.game.passTurn(); }, 200);
+            //this.game.passTurn();
         });
         area.addClass(animation);
 
@@ -150,5 +178,10 @@ export class GUI {
 
     clearTable() {
         $(".play").html("");
+
+        for (let card of this.game.player[0].hand) {
+            $("#card-" + card.x).removeClass("gray-backround");
+            $("#card-" + card.x).addClass("light-backround");
+        }
     }
 }

@@ -8,8 +8,6 @@ import { Card } from "/espionage2/js/card.js";
 
 
 
-
-
 class Espionage {
 	constructor() {
 		console.log("E S P I O N A G E")
@@ -34,10 +32,7 @@ class Espionage {
 			};
 		}
 
-
-
 		//this.reset("rules"); // reset to rules screen on load
-
 	}
 
 
@@ -57,11 +52,6 @@ class Espionage {
 		//	this.gui.toggleScreen(input);
 
 		this.passTurn();
-		/*
-		for (let r = 0; r < 13; r++) {
-			this.playRound();
-		}
-		*/
 	}
 
 
@@ -71,19 +61,12 @@ class Espionage {
 		let aces = [];
 		let card;
 		for (let a of GM.aces) {
-			//console.log(a);
 			card = new Card(a);
-			//console.log(card);
 			aces.push(card);
-			//console.log(...aces);
 		}
-		//console.log(...aces);
 		aces = GM.shuffle(aces);
-		//console.log(...aces);
 		for (let a = 0; a < 4; a++) {
 			card = aces.pop();
-			//console.log(ace);
-			//let suit = card.suit;
 			this.player[a].hand.push(card);
 			this.player[a].team = card.color; 
 		}
@@ -96,7 +79,6 @@ class Espionage {
 		for (let c = 4; c < 52; c++) {
 			let card = deck.pop();
 			let p = c % 4;
-			//console.log(p + " : " + this.player[p]);
 			this.player[p].hand.push(card);
 		}
 
@@ -149,17 +131,16 @@ class Espionage {
 		return output;
 	}
 
+	currentLead() {
+		return GM.compare(...this.currentRound());
+	}
+
 	playAI() {
 		let p = this.currentPlayer;
 		console.log("P L A Y _ A I : " + p + " ( " + GM.players[p] + " )");
 		this.check();
-		let round = this.currentRound();
-		let card = null;
 		
-		console.log(round);
-
-		let currentBestCard = GM.compare(...round);
-		card = this.ai.play(currentBestCard, this.player[p].hand);
+		let card = this.ai.play(this.currentLead(), this.player[p].hand);
 
 		this.playCard(p, card);
 

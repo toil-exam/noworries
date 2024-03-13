@@ -46,6 +46,8 @@
     --black-color: #353633;
     --red-color: #e63633;
 
+    --gray-color: #b5b6b3;
+
 
     --standard-animation: 0.6s linear 0s 1 normal;
 
@@ -138,7 +140,6 @@ h1, h3 { transform: scale(2); }
 #yourTurn {top: 50vh; left: 40vw; width: 20vw;}
 
 #southArea, #westArea, #northArea, #eastArea, #rulesToggle, #hand {
-    border: 1px solid var(--light-text-color); 
     padding: 5px; 
 }
 
@@ -157,28 +158,28 @@ h1, h3 { transform: scale(2); }
 .southPlay-animate {animation: southPlay-animate var(--standard-animation);}
 @keyframes southPlay-animate {
     0% {top: 80vh; transform: rotate(0deg); }
-    30% {top: 70vh; transform: rotate(720deg); }
+    30% {top: 70vh; transform: rotate(710deg); }
     100% {top: 60vh; transform: rotate(720deg); }
 }
 
 .westPlay-animate {animation: westPlay-animate var(--standard-animation);}
 @keyframes westPlay-animate {
     0% {left: 10vw; transform: rotate(180deg); }
-    30% {left: 20vw; transform: rotate(360deg); }
+    30% {left: 20vw; transform: rotate(350deg); }
     100% {left: 30vw; transform: rotate(360deg); }
 }
 
 .northPlay-animate {animation: northPlay-animate var(--standard-animation);}
 @keyframes northPlay-animate {
     0% {top: 0vh; transform: rotate(180deg); }
-    30% {top: 10vh; transform: rotate(360deg); }
+    30% {top: 10vh; transform: rotate(350deg); }
     100% {top: 20vh; transform: rotate(360deg); }
 }
 
 .eastPlay-animate {animation: eastPlay-animate var(--standard-animation);}
 @keyframes eastPlay-animate {
     0% {left: 80vw; transform: rotate(180deg); }
-    30% {left: 70vw; transform: rotate(360deg); }
+    30% {left: 70vw; transform: rotate(350deg); }
     100% {left: 60vw; transform: rotate(360deg); }
 }
 
@@ -198,8 +199,9 @@ h1, h3 { transform: scale(2); }
     height: var(--card-height);
     padding: 5px;
     border: 5px solid;
+    border-radius: 5px;
     margin-left: 5px;
-    background-color: var(--light-text-color);
+    margin-right: 5px;
     display: block;
 }
 
@@ -208,13 +210,19 @@ h1, h3 { transform: scale(2); }
     color: var(--black-color);
 }
 .black-color { color: var(--black-color); }
+.black-border { border: 5px solid var(--black-color); }
 
 .red-card {
     border-color: var(--red-color);
     color: var(--red-color);
 }
 .red-color { color: var(--red-color); }
+.red-border { border: 5px solid var(--red-color); }
 
 
 .light-background { background-color: var(--light-text-color); }
 .light-color { color: var(--light-text-color); }
+.light-border { border: 1px solid var(--light-text-color); }
+
+
+.gray-background { background-color: var(--gray-color); }
