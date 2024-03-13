@@ -138,7 +138,7 @@ h1, h3 { transform: scale(2); }
 .westPlay-animate {animation: westPlay-animate var(--standard-animation);}
 @keyframes westPlay-animate {
     0% {left: 10vw; }
-    100% {top: 30vw; }
+    100% {left: 30vw; }
 }
 
 .northPlay-animate {animation: northPlay-animate var(--standard-animation);}
@@ -149,8 +149,8 @@ h1, h3 { transform: scale(2); }
 
 .eastPlay-animate {animation: eastPlay-animate var(--standard-animation);}
 @keyframes eastPlay-animate {
-    0% {top: 80vw; }
-    100% {top: 60vw; }
+    0% {left: 80vw; }
+    100% {left: 60vw; }
 }
 
 

@@ -40,7 +40,7 @@ export class GM {
         let temp;
         let r;
         for (let i = 0, length = arr.length;  i < length; i++) {
-            r = Math.random * length;
+            r = Math.random() * length;
             temp = output[i];
             output[i] = output[r];
             output[r] = temp;
@@ -80,7 +80,7 @@ export class GM {
 
     static lowest(...cards) {
         console.log("L O W E S T");
-        //console.log(...cards);
+        console.log(...cards);
         let arr = [];
         let output = null;
 
@@ -97,11 +97,13 @@ export class GM {
         }
 
         if (arr.length > 1) {
-            let r = Math.floor(Math.random * arr.length);
+            let r = Math.floor(Math.random() * arr.length);
             output = arr[r];
         } else if (arr.length === 1) {
             output = arr[0];
         }
+
+        console.log(output);
 
         return output;
     }

@@ -9,6 +9,9 @@ export class GUI {
         this.game = game;
         this.gameScreen = $("#gameScreen");
 
+        this.toggleScreen("rules");
+
+        /*
         for (let player of GM.players) {
             let area = $("#" + player.toLowerCase() + "Area");
             area.html(player + " Area");
@@ -16,6 +19,7 @@ export class GUI {
             let play = $("#" + player.toLowerCase() + "Play");
             play.html(player + "Play");
         }
+        */
     }
 
     toggleScreen(input = null) {
@@ -29,6 +33,7 @@ export class GUI {
             screen.show();
             if (input === "rules") {
                 screen.one("click", () => {
+                    this.game.update();
                     this.toggleScreen("game");
                 });
             } else if (input === "game") {
@@ -57,6 +62,14 @@ export class GUI {
         }
     }
 
+    updateNPC() {
+        for (let p = 1; p < 4; p++) {
+            let player = GM.players[p];
+            let count = this.player[p].take.length;
+            $("#" + player.toLowerCase() + "Take").html(count);
+        }
+    }
+
     activatePlayerHand() {
         console.log("U S E R _ T U R N");
 
@@ -82,10 +95,24 @@ export class GUI {
         let player = GM.players[p];
         console.log("A N I M A T E _ P L A Y : " + player + " : " + card.RankOfSuit);
         let area = $("#" + player.toLowerCase() + "Play");
+        let animation = player.toLowerCase() + "Play-animate";
 
+        area.hide();
         area.html(this.cardSpan(card));
+        area.removeClass(animation);
+        area.show();
+        
 
-        area.addClass(player.toLowerCase() + "Play-animate");
+        area.off("animationend");
+        area.one("animationend", () => {
+            area.removeClass(animation);
+            this.game.passTurn();
+        });
+        area.addClass(animation);
 
+    }
+
+    clearTable() {
+        $(".play").html("");
     }
 }

@@ -43,14 +43,16 @@ export class AI {
         //console.log(possible);
 
         if (possible.length > 1) {
-            //r = Math.floor(Math.random * possible.length);
+            //r = Math.floor(Math.random() * possible.length);
             output = GM.lowest(...possible);
         } else if (possible.length === 1) {
             output = possible[0];
         } else {
+            console.log("just play lowest ???");
+            console.log(hand);
             output = GM.lowest(...hand);
 
-            //r = Math.floor(Math.random * hand.length);
+            //r = Math.floor(Math.random() * hand.length);
             //output = hand[r];
         }
 
